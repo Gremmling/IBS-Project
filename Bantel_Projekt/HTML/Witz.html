@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
+	<style>
+
+		.buttonStyle{
+			border-radius: 8px;
+			font-size: 50px;
+			width: 30%;
+			box-shadow: 4px 4px;
+		}
+
+		.center{
+			margin: auto;
+			padding: 10px;
+		}
+
+		.textareaStyle{
+			width: 100%;
+			height: 500px;
+		}
+	</style>
 	<head>
 		<title>Witz</title>
 	</head>
 	<body>
-		<button>Erzähl Witz</button>
-		<button onclick="window.location.href='FrontPage.html'">Zurück</button>
+		<button class="buttonStyle" onclick="window.location.href='FrontPage.html'">Zurück</button>
+		<button class="buttonStyle">Erzähl Witz</button>
+		<div class="center">
+			<textarea readonly class="textareaStyle">test</textarea>
+		</div>
 	</body>
 </html>
