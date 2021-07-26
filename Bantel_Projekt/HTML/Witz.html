@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html>
 	<style>
+		h1{
+			text-align: center;
+			font-size: 42px;
+		}
+
+		h2{
+			font-size: 28px;
+		}
+
+		button{
+			width: 12%;
+			height: 50px;
+			margin-right: 3%;
+			margin-bottom: 30px;
+			display: inline-block;
+			border-radius: 8px;
+			box-shadow: 4px 4px;
+		}
+
+		#container{
+			margin-left: 5%;
+			margin-bottom: 30px;
+		}
 
 		.buttonStyle{
 			border-radius: 8px;
@@ -15,19 +38,24 @@
 		}
 
 		.inputStyle{
-			width: 100%;
+			width: 90%;
 			height: 500px;
+			margin-bottom: 30px;
 		}
 	</style>
+
 	<head>
 		<title>Witz</title>
 	</head>
+
 	<body>
-		<button class="buttonStyle" onclick="window.location.href='FrontPage.html'">Zurück</button>
-		<button class="buttonStyle">Erzähl Witz</button><br>
 		<h1>Witz</h1>
-		<div class="centerLabel">
+
+		<div id="container">
+			<h2>Select your choice:</h2>
+			<button>Tell joke</button>
 			<input readonly class="inputStyle"></input>
+			<button onclick="window.location.href='FrontPage.html'">Go back</button>
 		</div>
 	</body>
 </html>
