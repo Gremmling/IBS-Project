@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<style>
-		.centered{
+		.centeredTitle{
 			display: table-cell;
 			width: 800rem;
 			text-align: center;
 			vertical-align: middle;
+		}
+
+		.centerButtons{
+			margin: auto;
+			padding: 10px;
+			height: 600px;
 		}
 
 		.buttonStyle{
@@ -16,33 +22,29 @@
 			box-shadow: 4px 4px;
 		}
 
-		.divSize{
-			width: 50%;
+		.divSizeLeft{
+			width: 40%;
 			float: left;
 		}
 
-		.divSize2{
-			width: 50%;
+		.divSizeRight{
+			width: 40%;
 			float: right;
 		}
 
-		.center{
-			margin: auto;
-			padding: 10px;
-		}
 	</style>
 	<head>
 		<title>Bantel Projekt</title>
 	</head>
 	<body>
-		<div class="centered">
+		<div class="centeredTitle">
 			<h1>Anti Boredom</h1>
 		</div>
-		<div class="center">
-			<div class="divSize">
+		<div class="centerButtons">
+			<div class="divSizeLeft">
 				<button class="buttonStyle" onclick="window.location.href='Schere_Stein_Papier.html'">Schere, Stein, Papier</button>
 			</div>
-			<div class="divSize2">
+			<div class="divSizeRight">
 				<button class="buttonStyle" onclick="window.location.href='Witz.html'">Witze</button>
 			</div>
 		</div>

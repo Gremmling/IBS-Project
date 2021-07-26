@@ -1,12 +1,48 @@
 <!DOCTYPE html>
 <html>
+	<style>
+
+		.buttonStyle{
+		border-radius: 8px;
+		font-size: 50px;
+		width: 100%;
+		box-shadow: 4px 4px;
+		margin-bottom: 10px;
+		}
+
+		.divButtonsSchereSteinPapier{
+			width: 20%;
+			border-style: solid;
+			border-color: blueviolet;
+		}
+
+		.divBackButton{
+			border-style: solid;
+			border-color: aqua;
+		}
+
+		.backButton{
+			border-radius: 8px;
+			font-size: 50px;
+			width: 50%;
+			box-shadow: 4px 4px;
+			margin-bottom: 10px;
+		}
+	</style>
 	<head>
 		<title>Bantel Projekt</title>
 	</head>
 	<body>
-		<button onclick="window.location.href='FrontPage.html'">Zurück</button>
-		<button>Schere</button>
-		<button>Stein</button>
-		<button>Papier</button>
+		<div class="divBackButton">
+			<button class="backButton" onclick="window.location.href='FrontPage.html'">Zurück</button><br>
+		</div>
+		<div class="divButtonsSchereSteinPapier">
+			<button class="buttonStyle">Schere</button><br>
+			<button class="buttonStyle">Stein</button><br>
+			<button class="buttonStyle">Papier</button><br>
+		</div>
+		<div>
+			<input readonly></textarea>
+		</div>
 	</body>
 </html>
