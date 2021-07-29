@@ -1,0 +1,104 @@
+{
+	"version": "1.0",
+	"session": {
+		"new": false,
+		"sessionId": "amzn1.echo-api.session.c06ca7af-6a45-4113-b8af-21d5fcb1c314",
+		"application": {
+			"applicationId": "amzn1.ask.skill.6c208496-56b3-45b8-9290-eaa0082aa6af"
+		},
+		"user": {
+			"userId": "amzn1.ask.account.AEX3YS5KZRPNQHLMOHHPTYIHV6NW4VFHLUNQIGCYOLHBDYQYYFTTPDILYX7EQ6K6MUQGB5F6T7UMWZAG2WSQXVQDE3CWHBCZPWAMSNZTHTTU2NYA55AT42HYVAHYULELOJTCSXBSKPGLT2O7RHBE4J5QMDVFKYYJKSEE2IXZKNSPBUGFLXCHBR22XPWWPWLXLLGW6WAGDOWZFLA"
+		}
+	},
+	"context": {
+		"System": {
+			"application": {
+				"applicationId": "amzn1.ask.skill.6c208496-56b3-45b8-9290-eaa0082aa6af"
+			},
+			"user": {
+				"userId": "amzn1.ask.account.AEX3YS5KZRPNQHLMOHHPTYIHV6NW4VFHLUNQIGCYOLHBDYQYYFTTPDILYX7EQ6K6MUQGB5F6T7UMWZAG2WSQXVQDE3CWHBCZPWAMSNZTHTTU2NYA55AT42HYVAHYULELOJTCSXBSKPGLT2O7RHBE4J5QMDVFKYYJKSEE2IXZKNSPBUGFLXCHBR22XPWWPWLXLLGW6WAGDOWZFLA"
+			},
+			"device": {
+				"deviceId": "amzn1.ask.device.AGCIKOHM3REGILDTZRPGCC7T5ME5BTLFF54HUCFZQ3IYPASN7IKBGQIH44AA7QFCEWUX2V5YAJR4XGOJJIAO4LXDXZZKNATKHUHPCVUUSVIVCTIGX7MLLWJFL5BXBFSQ6YUMSSYOMHO3HI23PG3F7PVMXDB6ZMZROQDNPS6ZUPHGL7IJQXKYI",
+				"supportedInterfaces": {}
+			},
+			"apiEndpoint": "https://api.eu.amazonalexa.com",
+			"apiAccessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJhdWQiOiJodHRwczovL2FwaS5hbWF6b25hbGV4YS5jb20iLCJpc3MiOiJBbGV4YVNraWxsS2l0Iiwic3ViIjoiYW16bjEuYXNrLnNraWxsLjZjMjA4NDk2LTU2YjMtNDViOC05MjkwLWVhYTAwODJhYTZhZiIsImV4cCI6MTU5NDExNzc5MCwiaWF0IjoxNTk0MTE3NDkwLCJuYmYiOjE1OTQxMTc0OTAsInByaXZhdGVDbGFpbXMiOnsiY29udGV4dCI6IkFBQUFBQUFBQVFDTUNFUnpGbzV4bzNWd2ZWWmJ3WDhMS2dFQUFBQUFBQUR0cVVESGM3eGFDOHlRMjJXMkVvZXRVY0tqTklScHFPV0FBWE8waEpyVWw5dU1waTQyWjVKeE4wNWFCR2U0N05xTXpHd2thc0hBU3U2TEV6NHphZ2I0akRnN0tYVElzcktBYVk4OENlSWI1RjU0YS9qSHQ3cW12eHlXKzNTMzdqQWpRcFdOdmlkZzJOa21TQ0dUNEt1UWw4MVR2dW1RbXdEVVEyMG5TcUt2Z2ZMcG5pcElSU2ZmYTRTeHdONXJFMzY4TDZFUk1BdnFRekNvMUU2MGpOd0JHMHZBdWhhVkM3RjBwNVYxWS9tVHk1b0ZwT1U3TVBtRDg5d1NQZWVybGs1SmZqK2xaQkhLSGFzK2FqcjdhcDEvckNocDFBbmRvSERiUEUrR3Bsd3NIdm1XS2gxd1JDZzNpYVp2SmpMSFVxRGxqcHFTV3ZwRVpMWWFvL05CNHJ2dExRdWFvUG85Z1cxSi9YekFWQzFmSVNSL05YR3pFdDJOVU52d2FKZ0JhVHA1Ym94YWFDeFkyNWtsIiwiY29uc2VudFRva2VuIjpudWxsLCJkZXZpY2VJZCI6ImFtem4xLmFzay5kZXZpY2UuQUdDSUtPSE0zUkVHSUxEVFpSUEdDQzdUNU1FNUJUTEZGNTRIVUNGWlEzSVlQQVNON0lLQkdRSUg0NEFBN1FGQ0VXVVgyVjVZQUpSNFhHT0pKSUFPNExYRFhaWktOQVRLSFVIUENWVVVTVklWQ1RJR1g3TUxMV0pGTDVCWEJGU1E2WVVNU1NZT01ITzNISTIzUEczRjdQVk1YREI2Wk1aUk9RRE5QUzZaVVBIR0w3SUpRWEtZSSIsInVzZXJJZCI6ImFtem4xLmFzay5hY2NvdW50LkFFWDNZUzVLWlJQTlFITE1PSEhQVFlJSFY2Tlc0VkZITFVOUUlHQ1lPTEhCRFlRWVlGVFRQRElMWVg3RVE2SzZNVVFHQjVGNlQ3VU1XWkFHMldTUVhWUURFM0NXSEJDWlBXQU1TTlpUSFRUVTJOWUE1NUFUNDJIWVZBSFlVTEVMT0pUQ1NYQlNLUEdMVDJPN1JIQkU0SjVRTURWRktZWUpLU0VFMklYWktOU1BCVUdGTFhDSEJSMjJYUFdXUFdMWExMR1c2V0FHRE9XWkZMQSJ9fQ.ThGo5p2A0dUluH1jpcDpPaOsepwUlB0uWDL1-fWKb08ZOhl27ImhIOJI1NpmFOmRnHJ-JUK4aNgsLXoAUM0T3eBSTL1DyH8gJ4BOBYljTAYKv2cW2K_cxrdkrk4GcleVaup9lKYkI4rYWT0ko5Lr2lw-tososfTVnGBm4wdv8itfhynhvZqCdbQeY0hPpZPKhP9vvGn1nd2gwsumu-YKiQRjM-XV6t2qIGEKt723TncTRy0CMIxrSr3VJUgI9pjMRUNZrOia-b_baujH44jf7GqH_py0Ng4nYv-kFULMmCbwuZJukHRvmziivnXq3S7i7EA7f8oq2Xv0lAmm3-FwJA"
+		},
+		"Viewport": {
+			"experiences": [
+				{
+					"arcMinuteWidth": 246,
+					"arcMinuteHeight": 144,
+					"canRotate": false,
+					"canResize": false
+				}
+			],
+			"shape": "RECTANGLE",
+			"pixelWidth": 1024,
+			"pixelHeight": 600,
+			"dpi": 160,
+			"currentPixelWidth": 1024,
+			"currentPixelHeight": 600,
+			"touch": [
+				"SINGLE"
+			],
+			"video": {
+				"codecs": [
+					"H_264_42",
+					"H_264_41"
+				]
+			}
+		},
+		"Viewports": [
+			{
+				"type": "APL",
+				"id": "main",
+				"shape": "RECTANGLE",
+				"dpi": 160,
+				"presentationType": "STANDARD",
+				"canRotate": false,
+				"configuration": {
+					"current": {
+						"video": {
+							"codecs": [
+								"H_264_42",
+								"H_264_41"
+							]
+						},
+						"size": {
+							"type": "DISCRETE",
+							"pixelWidth": 1024,
+							"pixelHeight": 600
+						}
+					}
+				}
+			}
+		]
+	},
+	"request": {
+		"type": "IntentRequest",
+		"requestId": "amzn1.echo-api.request.e535eeb9-991e-4a76-a14e-ca34d4c0ebce",
+		"locale": "de-DE",
+		"timestamp": "2020-07-07T10:24:50Z",
+		"intent": {
+			"name": "Joke",
+			"confirmationStatus": "NONE",
+			"slots": {
+				"name": {
+					"name": "name",
+					"value": "XXXXX",
+					"confirmationStatus": "NONE",
+					"source": "USER"
+				}
+			}
+		},
+		"dialogState": "COMPLETED"
+	},
+	"response": {
+		"outputspeech": {
+			"type": "PlainText",
+			"text": "Hier sollte ein Witz zurück kommen"
+		}
+	}
+}
