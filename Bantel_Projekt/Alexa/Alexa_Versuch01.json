@@ -20,11 +20,14 @@
 				},
 				{
 					"name": "Auswahl_Schere_Stein_Papier",
-					"slots":[],
+					"slots":[
+						{
+							"name": "auswahl",
+							"type": "PlainText"
+						}
+					],
 						"samples":[
-							"Ich wähle Schere",
-							"Ich wähle Papier",
-							"Ich wähle Stein"
+							"Ich wähle {Auswahl}"
 					]
 				},
 				{

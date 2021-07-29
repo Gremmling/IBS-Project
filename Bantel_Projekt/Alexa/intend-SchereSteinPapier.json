@@ -93,12 +93,6 @@
 				}
 			}
 		},
-		"response": {
-			"outputspeech": {
-				"type": "PlainText",
-				"text": "Wähle Schere, Stein oder Papier aus."
-			}
-		},
 		"dialogState": "COMPLETED"
 	}
 }

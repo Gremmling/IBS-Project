@@ -93,12 +93,6 @@
 				}
 			}
 		},
-		"response": {
-			"outputspeech": {
-				"type": "PlainText",
-				"text": "Ich wähle Schere"
-			}
-		},
 		"dialogState": "COMPLETED"
 	}
 }
