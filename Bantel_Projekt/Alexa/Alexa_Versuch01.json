@@ -1,0 +1,36 @@
+{
+	"interacionModel": {
+		"languageModel": {
+			"invocationName": "Name",
+			"intents":[
+				{
+					"name": "Joke",
+					"slots": [
+						{
+							"name": "Witz",
+							"type": "AMAZONE.TEXT"
+						}
+					],
+						"samples": [
+							"Ich möchte einen Witz hören",
+							"Erzähl mir einen Witz"
+						]
+				},
+				{
+					"name": "Schere_Stein_Papier",
+					"slots": [
+						{
+							"name": "Auswahl",
+							"type": "AMAZONE.TEXT"
+						}
+					],
+						"samples": [
+							"Ich wähle Schere",
+							"Ich wähle Stein",
+							"Ich wähle Papier"
+						]
+				}
+			]
+		}
+	}
+}
