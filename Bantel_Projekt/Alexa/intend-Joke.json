@@ -93,12 +93,12 @@
 				}
 			}
 		},
+		"response": {
+			"outputspeech": {
+				"type": "PlainText",
+				"text": "Hier sollte ein Witz zurück kommen"
+			}
+		},
 		"dialogState": "COMPLETED"
-	},
-	"response": {
-		"outputspeech": {
-			"type": "PlainText",
-			"text": "Hier sollte ein Witz zurück kommen"
-		}
 	}
 }

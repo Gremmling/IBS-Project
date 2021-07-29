@@ -5,12 +5,7 @@
 			"intents":[
 				{
 					"name": "Joke",
-					"slots": [
-						{
-							"name": "Witz",
-							"type": "AMAZONE.TEXT"
-						}
-					],
+					"slots": [],
 						"samples": [
 							"Ich möchte einen Witz hören",
 							"Erzähl mir einen Witz"
@@ -18,19 +13,88 @@
 				},
 				{
 					"name": "Schere_Stein_Papier",
-					"slots": [
-						{
-							"name": "Auswahl",
-							"type": "AMAZONE.TEXT"
-						}
-					],
+					"slots": [],
 						"samples": [
-							"Ich wähle Schere",
-							"Ich wähle Stein",
-							"Ich wähle Papier"
+							"Ich möchte Schere Stein Papier spielen."
 						]
-				}
+				},
+				{
+					"name": "Auswahl_Schere_Stein_Papier",
+					"slots":[],
+						"samples":[
+							"Ich wähle Schere",
+							"Ich wähle Papier",
+							"Ich wähle Stein"
+					]
+				},
+				{
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                }
 			]
-		}
+		},
+		"dialog": {
+            "intents": [
+                {
+                    "name": "Joke",
+                    "confirmationRequired": false,
+                    "prompts": {},
+					"slots":[
+						{
+							"elicitation": "Elicit.Slot.206196487962.1421558230653"
+						}
+					]
+                },
+                {
+                    "name": "Schere_Stein_Papier",
+                    "confirmationRequired": false,
+                    "prompts": {},
+					"slots":[
+						{
+							"elicitation": "Elicit.Slot.1221523655832.95540222654"
+						}
+					]
+                },
+				{
+                    "name": "Auswahl_Schere_Stein_Papier",
+                    "confirmationRequired": false,
+                    "prompts": {},
+					"slots":[
+						{
+							"elicitation": "Elicit.Slot.1369951620684.1406059993041"
+						}
+					]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+		"prompts":[
+			{
+				"id": "Elicit.Slot.206196487962.1421558230653",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Den Befehl nicht Verstanden, bitte Wiederholen."
+                    }
+                ]
+			},
+			{
+				"id": "Elicit.Slot.1221523655832.95540222654",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Ich habe keine Zahl gehört, bitte wiederholen"
+                    }
+                ]
+			}
+		]
 	}
 }
