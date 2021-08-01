@@ -1,8 +1,11 @@
 var options = ['Schere', 'Stein', 'Papier'];
-var max = 3;
-var min = 1;
+var max = 2;
+var min = 0;
 var randomNumber = 0;
-var userId = "3598"
+var zustand = "Nicht gesetzt";
+
+
+var userId = "3598";
 var mqtt = require("mqtt");
 var connectOptions = {
 	host: "www.ostalbradar.de",
@@ -38,24 +41,28 @@ function answerGenerate(data) {
 
 	var message = JSON.parse(data);
 
-	if (message.request.type = "LaunchRequest") { //maybe wie ein automat in testat 3 aufbauen
+	if (message.request.type = "LaunchRequest" && zustand === "Nicht gesetzt") { //maybe wie ein automat in testat 3 aufbauen
 		console.log("LaunchRequest hat geklappt");
+		zustand = "Launched";
 		return "Willkommen bei Anti Boredom, wähle zwischen Schere, Stein, Papier und einem Witz aus.";
 	}
 
-	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Joke") {
+	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Joke" && zustand === "Launched") {
 		console.log("Witzt hat geklappt");
+		zustand = "Witz";
 		return "Hier sollte ein Witz ausgewählt werden.";
 	}
 
-	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Schere_Stein_Papier") {
+	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Schere_Stein_Papier" && zustand === "Launched") {
 		console.log("Schere Stein papier wurde gestartet");
+		zustand = "Auswahl Schere Stein Papier";
 		return "Bitte wähle Schere, Stein oder Papier aus.";
 	}
 
-	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Auswahl_Schere_Stein_Papier") {
+	else if (message.request.type = "IntentRequest" && message.request.intent.name == "Auswahl_Schere_Stein_Papier" && (zustand === "Auswahl Schere Stein Papier" || zustand === "Spielt Schere Stein Papier")) {
 		console.log("Antwort");
 		//Code für das schere stein papier schreiben
+		zustand = "Spielt Schere Stein Papier"
 		randomNumber = (Math.random() * (max - min)) + min;
 		var auswahl = message.request.intent.slots.auswahl.value;
 		if (randomNumber != 0) {
