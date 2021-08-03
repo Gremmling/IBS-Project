@@ -10,3 +10,5 @@ Witze = {
 }
 
 db.witze.InsertOne(Joke)
+
+db.witze.aggregate([{ $unwind : "$joke" }, {$group: { _id: null, count: { $sum: 1 } }}, {$unset: "_id"}])

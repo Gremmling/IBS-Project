@@ -85,7 +85,7 @@ function answerGenerate(data) {
 					return "Keine gültige Auswahl getroffen.";
 				}
 				else {
-					return "Ich hab gewonnen.";
+					return "Ich habe gewonnen.";
 				}
 			}
 		}
