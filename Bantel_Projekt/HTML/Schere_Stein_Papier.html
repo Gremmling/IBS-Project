@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="script.js"></script>
+		<title>Schere, Stein, Papier</title>
+	</head>
+
+
 	<style>
 		h1{
 			text-align: center;
@@ -58,71 +65,26 @@
 		}
 	</style>
 
-	<script>
-	function selection(x)	{
-		let choice;
-		if(x === 1){
-			choice = "Schere";
-			picture = "<img src='pictures/scissors.png'>";
-		}
-		else if(x === 2){
-			picture = "<img src='pictures/rock.png'>";
-			choice = "Stein";
-		}
-		else if(x === 3){
-			picture = "<img src='pictures/paper.png'>";
-			choice = "Papier";
-		}
-
-		axios.post('/rpc/userSelection', {"selection": choice})
-			.then(({data}) => {data = answer});
-
-		var picture;
-		var result = "<h1>You win!</h1>";
-
-		document.getElementById("picture1").innerHTML = data;
-
-		var y = Math.floor(Math.random() * 3) + 1;
-
-		if(y == 1) picture = "<img src='pictures/scissors.png'>";
-		if(y == 2) picture = "<img src='pictures/rock.png'>";
-		if(y == 3) picture = "<img src='pictures/paper.png'>";
-
-		document.getElementById("picture2").innerHTML = picture;
-
-		if((x == 1 && y == 2) || (x == 2 && y == 3) || (x == 3 && y == 1)) result = "<h1>You lose!</h1>";
-
-		if((x == 1 && y == 1) || (x == 2 && y == 2) || (x == 3 && y == 3)) result = "<h1>Tie!</h1>";
-
-		document.getElementById("result").innerHTML = result;
-}
-
-	</script>
-
-	<head>
-		<title>Schere, Stein, Papier</title>
-	</head>
-
 	<body>
 		<h1>Schere, Stein, Papier</h1>
 
 		<div id="container">
 			<h2>Select your choice:</h2>
-			<button id="button1" onclick="selection(1)">Schere</button>
-			<button id="button2" onclick="selection(2)">Stein</button>
-			<button id="button3" onclick="selection(3)">Papier</button>
+			<button id="button1" onclick="selection('Schere')">Schere</button>
+			<button id="button2" onclick="selection('Stein')">Stein</button>
+			<button id="button3" onclick="selection('Papier')">Papier</button>
 		</div>
 
 		<div class="colLeft">
 			<h2>Your choice:</h2>
-			<div id="picture1">
+			<div id="userChoice">
 				<img src='pictures/filler.png'>
 			</div>
 		</div>
 
 		<div class="colRight">
 			<h2>Computers choice:</h2>
-			<div id="picture2">
+			<div id="alexaChoice">
 				<img src='pictures/filler.png'>
 			</div>
 		</div>
