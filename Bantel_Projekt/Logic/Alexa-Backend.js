@@ -1,44 +1,10 @@
-var options = ['Schere', 'Stein', 'Papier'];
-var max = 2;
-var min = 0;
-var randomNumber = 0;
-var zustand = "Nicht gesetzt";
-
-
-var userId = "3598";
-var mqtt = require("mqtt");
-var connectOptions = {
-	host: "www.ostalbradar.de",
-	port: 8883,
-	protocol: "mqtts",
-	username: "3598",
-	password: "VYbnFXrGD94ghYKNuuDrNGV9d5c="
-};
-
-
-function onMessage(topic, message) {
-
-	let alexasAnswer = answerGenerate(message);
-
-	let response = {
-		response: {
-			outputSpeech:{
-				text: alexasAnswer,
-				type: "PlainText"
-			},
-			shouldEndSession: finish
-
-		},
-		version:"1.0"
-	};
- finish = false;
-	//console.log(topic, '' + message);
-	client.publish(
-		topic.replace("fr","to"), JSON.stringify(response));
-}
-
+exports.answerGenerate =
 function answerGenerate(data) {
-
+	var options = ['Schere', 'Stein', 'Papier'];
+	var max = 2;
+	var min = 0;
+	var randomNumber = 0;
+	var zustand = "Nicht gesetzt";
 	var message = JSON.parse(data);
 
 	if (message.request.type = "LaunchRequest" && zustand === "Nicht gesetzt") { //maybe wie ein automat in testat 3 aufbauen
@@ -67,38 +33,27 @@ function answerGenerate(data) {
 		var auswahl = message.request.intent.slots.auswahl.value;
 		if (randomNumber != 0) {
 			if (options[randomNumber] == auswahl) {
-				return "Ist das gleiche, also Unentschieden.";
+				return ["Ist das gleiche, also Unentschieden.", options[randomNumber]];
 			}
 			else if ((options[randomNumber] === "Schere") && (auswahl === "Stein")) {
-				return "Du hast gewonnen.";
+				return ["Du hast gewonnen.", options[randomNumber]];
 			}
 
 			else if ((options[randomNumber] === "Stein") && (auswahl === "Papier")) {
-				return "Du hast gewonnen.";
+				return ["Du hast gewonnen.", options[randomNumber]];
 			}
 
 			else if ((options[randomNumber] === "Papier") && (auswahl === "Schere")) {
-				return "Du hast gewonnen.";
+				return ["Du hast gewonnen.", options[randomNumber]];
 			}
 			else {
 				if (auswahl !== "Schere" || auswahl !== "Stein" || auswahl !== "Papier") {
 					return "Keine gültige Auswahl getroffen.";
 				}
 				else {
-					return "Ich habe gewonnen.";
+					return ["Ich habe gewonnen.", options[randomNumber]];
 				}
 			}
 		}
 	}
 }
-
-(async function main() {
-	console.log("Go");
-	client = mqtt.connect(connectOptions)
-	.on("connect", function() {
-		console.log("connected");
-		client.on('message', onMessage);
-		client.subscribe("mqttfetch/alexa2mqtt/" + userId + "/fr/+");
-	}
-	)
-})();

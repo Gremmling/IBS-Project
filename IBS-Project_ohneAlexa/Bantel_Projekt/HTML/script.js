@@ -1,3 +1,9 @@
+var options = ['Schere', 'Stein', 'Papier'];
+var max = 2;
+var min = 0;
+var randomNumber = 0;
+
+
 const axiosInstance = axios.create({
 	baseURL: 'http://localhost:5000'
 });
@@ -19,26 +25,25 @@ function selection(x) {
 	axiosInstance.post('/rpc/userSelection', { "selection": choice })
 		.then(({ data }) => {
 			var picture;
-			var result;
+			var result = "<h1>You win!</h1>";
 
-			if (data[1] === "Schere")
+			randomNumber = (Math.random() * (max - min)) + min;
+
+			if (data === "Schere")
 				picture = "<img src='pictures/scissors.png'>";
-			else if (data[1] === "Stein")
+			else if (data === "Stein")
 				picture = "<img src='pictures/rock.png'>";
-			else if (data[1] === "Papier")
+			else if (data === "Papier")
 				picture = "<img src='pictures/paper.png'>";
 
-			if (data[0] === "Ist das gleiche, also Unentschieden.") {
-				result = "<h1>Tie!</h1>";
-			}
-			else if (data[0] === "Du hast gewonnen.") {
-				result = "<h1>You win!</h1>";
-			}
-			else if (data[0] === "Ich habe gewonnen.") {
-				result = "<h1>You lose!</h1>";
-			}
-
 			document.getElementById("alexaChoice").innerHTML = picture;
+
+			if ((x === "Schere" && data === "Stein") || (x === "Stein" && data === "Papier") || (x === "Papier" && data === "Schere"))
+				result = "<h1>You lose!</h1>";
+
+			else if (x === data)
+				result = "<h1>Tie!</h1>";
+
 			document.getElementById("result").innerHTML = result;
 		});
 }
