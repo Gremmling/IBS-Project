@@ -22,7 +22,7 @@ function selection(x) {
 
 	document.getElementById("userChoice").innerHTML = picture;
 
-	axiosInstance.post('/rpc/userSelection', { "selection": choice })
+	axiosInstance.post('/rps/userSelection', { "selection": choice })
 		.then(({ data }) => {
 			var picture;
 			var result = "<h1>You win!</h1>";

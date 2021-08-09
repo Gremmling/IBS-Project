@@ -29,11 +29,11 @@ app.get("/joke", (req, res) => {
 
 })
 
-app.post("/rpc/initRPC", (req, res) => {
+app.post("/rps/initRPS", (req, res) => {
 	//alexa sagen, dass jetzt ein spiel startet
 });
 
-app.post("/rpc/userSelection", (req, res) => {
+app.post("/rps/userSelection", (req, res) => {
 	// aus req lesen welceh auswahl der spieler getroffen hat
 	// ...
 
