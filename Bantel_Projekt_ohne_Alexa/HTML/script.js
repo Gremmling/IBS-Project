@@ -3,7 +3,6 @@ var max = 2;
 var min = 0;
 var randomNumber = 0;
 
-
 const axiosInstance = axios.create({
 	baseURL: 'http://localhost:5000'
 });
@@ -20,31 +19,29 @@ function selection(x) {
 		picture = "<img src='pictures/paper.png'>";
 	}
 
+	let uname = document.getElementById("uname").value;
+
 	document.getElementById("userChoice").innerHTML = picture;
 
-	axiosInstance.post('/rps/userSelection', { "selection": choice })
+	axiosInstance.post('/rps/userSelection', { "selection": choice, "username": uname })
 		.then(({ data }) => {
+			console.log(data);
+			
 			var picture;
-			var result = "<h1>You win!</h1>";
 
 			randomNumber = (Math.random() * (max - min)) + min;
 
-			if (data === "Schere")
+			if (data.selection === "Schere")
 				picture = "<img src='pictures/scissors.png'>";
-			else if (data === "Stein")
+			else if (data.selection === "Stein")
 				picture = "<img src='pictures/rock.png'>";
-			else if (data === "Papier")
+			else if (data.selection === "Papier")
 				picture = "<img src='pictures/paper.png'>";
 
 			document.getElementById("alexaChoice").innerHTML = picture;
 
-			if ((x === "Schere" && data === "Stein") || (x === "Stein" && data === "Papier") || (x === "Papier" && data === "Schere"))
-				result = "<h1>You lose!</h1>";
-
-			else if (x === data)
-				result = "<h1>Tie!</h1>";
-
-			document.getElementById("result").innerHTML = result;
+			document.getElementById("result").innerHTML = data.result;
+			document.getElementById("score").innerHTML = "Your score against Alexa: " + data.score;
 		});
 }
 
