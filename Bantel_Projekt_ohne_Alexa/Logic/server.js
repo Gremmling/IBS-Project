@@ -12,14 +12,6 @@ app.use(bodyParser.json());
 
 
 app.get("/jokeWithAPI", (req, res) => {
-	// const jokes = [
-	// 	"Why did you choose JavaScript? I didn't. It just showed up an wont't leave.",
-	// 	"Why do Java developers wear glasses? Because they don't C#!",
-	// 	"Warum lieben Frauen objektorientierte Programmierer? Weil sie Klasse haben.",
-	// 	"Immer mehr Senioren verschwinden im Internet, weil sie die Tasten 'Alt' und 'Entfernen' drücken."
-	// ];
-	// res.send(jokes[Math.floor(Math.random() * jokes.length)]);
-
 	axios.get('https://api.chucknorris.io/jokes/random', {})
 		.then(({ data }) => {
 			res.send(data.value);

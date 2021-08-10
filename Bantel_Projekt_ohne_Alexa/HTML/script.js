@@ -45,16 +45,16 @@ function selection(x) {
 		});
 }
 
-function jokeWithAPI(){
+function jokeWithAPI() {
 	axiosInstance.get('/jokeWithAPI', {})
 		.then(({ data }) => {
-			document.getElementById("jokewithAPI()").value = data;
+			document.getElementById("joke").value = data;
 		});
 }
 
-// function jokeWithDatabase() {
-// 	axiosInstance.get('/jokeWithDatabase', {})
-// 		.then(({ data }) => {
-// 			document.getElementById("jokeWithDatabase()").value = data;
-// 		});
-// }
+function jokeWithDatabase() {
+	axiosInstance.get('/jokeWithDatabase', {})
+		.then(({ data }) => {
+			document.getElementById("joke").value = data;
+		});
+}
