@@ -26,7 +26,7 @@ function selection(x) {
 	axiosInstance.post('/rps/userSelection', { "selection": choice, "username": uname })
 		.then(({ data }) => {
 			console.log(data);
-			
+
 			var picture;
 
 			randomNumber = (Math.random() * (max - min)) + min;
@@ -45,9 +45,16 @@ function selection(x) {
 		});
 }
 
-function joke(){
-	axiosInstance.get('/joke', {})
+function jokeWithAPI(){
+	axiosInstance.get('/jokeWithAPI', {})
 		.then(({ data }) => {
-			document.getElementById("joke").value = data;
+			document.getElementById("jokewithAPI()").value = data;
 		});
 }
+
+// function jokeWithDatabase() {
+// 	axiosInstance.get('/jokeWithDatabase', {})
+// 		.then(({ data }) => {
+// 			document.getElementById("jokeWithDatabase()").value = data;
+// 		});
+// }

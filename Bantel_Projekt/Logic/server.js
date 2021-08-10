@@ -31,7 +31,7 @@ app.get("/joke", (req, res) => {
 
 	//Mit dem Topic '"mqttfetch/alexa2mqtt/" + userId + "/fr/+"' disconnected die verbindung?!
 	//bantel fragen ob wir das richtige topic verwenden.
-	client.publish("LaunchRequest", 'LaunchRequest');
+	client.publish("mqttfetch/alexa2mqtt/" + userId + "/fr/+", 'LaunchRequest');
 	console.log("[After Pub]");
 })
 

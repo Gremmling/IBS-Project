@@ -54,7 +54,10 @@
 
 		<div id="container">
 			<h2>Select your choice:</h2>
-			<button onclick="joke()">Tell joke</button>
+			<div>
+				<button onclick="jokeWithAPI()">Tell joke with API</button>
+				<button onclick="jokeWithDatabase()">Tell Joke with Database</button>
+			</div>
 			<input readonly id = "joke" class="inputStyle"></input>
 			<button onclick="window.location.href='FrontPage.html'">Go back</button>
 		</div>
