@@ -58,12 +58,15 @@ async function connectDatabase(data) {
 
 		var result = getResult(data.selection, selection);
 
-		var uname = await findUser(client, data.username);
+		if (data.username != "") {
+			var uname = await findUser(client, data.username);
 
-		if (uname)
-			var score = await updateUser(client, data.username, result);
-		else
-			var score = await createUser(client, data.username, result);
+			if (uname)
+				var score = await updateUser(client, data.username, result);
+			else
+				var score = await createUser(client, data.username, result);
+		}
+		else var score = "No username inserted!";
 
 		var answer = { "selection": selection, "result": result, "score": score };
     } 
