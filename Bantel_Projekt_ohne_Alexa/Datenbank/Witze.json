@@ -3,9 +3,41 @@ db.createCollection("Witze")
 Witze = {
 	"Jokes":[
 		"Why did you choose JavaScript? I didn't. It just showed up an wont't leave.",
+
 		"Why do Java developers wear glasses? Because they don't C#!",
+
 		"Warum lieben Frauen objektorientierte Programmierer? Weil sie Klasse haben.",
-		"Immer mehr Senioren verschwinden im Internet, weil sie die Tasten 'Alt' und 'Entfernen' drücken."
+
+		"Immer mehr Senioren verschwinden im Internet, weil sie die Tasten 'Alt' und 'Entfernen' drücken.",
+
+		"Kommt ein Pferd in die Bar. Fragt der Baarkeeper: Warum so ein langes Gesicht?",
+
+		"Kommt ein Mann in die Bar, sitzen 22 Lilliputaner am Tresen. Sagt der Mann: Was ist da los, der Kicker kaputt?",
+
+		"Ein Elefant trifft am Fluss auf einen nackten Mann: Was  damit trinkst Du?",
+
+		"Warum gehen Fliegen nicht in die Kirche? Sie sind Insekten.",
+
+		"Mann wäscht ab.",
+
+		"Genetiv ins Wasser.Weil es Dativ ist.",
+
+		"Zwei Kanibalen essen einen Clown. Meint der eine: Schmeckt irgendwie komisch.",
+
+		"Meditieren ist besser als rumsitzen und nix tun.",
+
+		"Wie heißt n Boomerang der nicht zurückkommt? Stock.",
+
+		"Zwei Liliputaner an der Bar: 2 Kurze.Barmann: Seh ich selbst und was wollt ihr trinken?",
+
+		"Kundin ruft beim Support an: Mein Monitor ist kaputt. Support: Ist er denn an? Kundin: Ja. Support: Dann machen sie ihn mal aus. Kundin: Oh,
+		jetzt geht er.",
+
+		"Letzten Worte des Sportlehrers? Alle Speere zu mir!",
+
+		"Jetzt geht es rund! sagte der Papagei und sprang in den Ventilator.",
+
+		"Sind Sie ignorant oder einfach nur dumm?  Weiß ich nicht. Interessiert mich auch nicht."
 	]
 }
 
