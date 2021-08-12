@@ -12,6 +12,12 @@ const app = express(); //der express servers wird erstellt
 app.use(cors()); //andere pakete wollen wir verwenden
 app.use(bodyParser.json());
 
+
+app.get("/games/tickTacToe", (req, res) => {
+	res.send("hat geklappt")
+})
+
+
 app.get("/jokeWithAPI", (req, res) => {
 	axios.get('https://api.chucknorris.io/jokes/random', {})
 		.then(({ data }) => {
@@ -20,7 +26,7 @@ app.get("/jokeWithAPI", (req, res) => {
 })
 
 app.get("/jokeWithDatabase", (req, res) => {
-	connectDatabase(req.body, 1).then(answer => { 
+	connectDatabase(req.body, 1).then(answer => {
 		res.send(answer);
 	})
 })
@@ -32,7 +38,7 @@ app.post("/rps/initRPS", (req, res) => {
 app.post("/rps/userSelection", (req, res) => {
 	// aus req lesen welceh auswahl der spieler getroffen hat
 	// ...
-	connectDatabase(req.body, 0).then(answer => { 
+	connectDatabase(req.body, 0).then(answer => {
 		res.send(answer);
 	})
 });
@@ -42,9 +48,9 @@ app.listen(5000, () => {
 })
 
 async function connectDatabase(data, value) {
-    
+
 	const uri = "mongodb+srv://Jannik:oKiYjEJ5G6zJJhO0@ibsproject.h8auc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    
+
     const client = new MongoClient(uri);
 
     try {
@@ -73,8 +79,8 @@ async function connectDatabase(data, value) {
 		else if (value === 1) {
 			var answer = await getJoke(client);
 		}
-    } 
-	
+    }
+
 	finally {
         // Close the connection to the MongoDB cluster
         await client.close();
@@ -85,8 +91,8 @@ async function connectDatabase(data, value) {
 }
 
 async function findUser(client, username) {
-    const result = await client.db("rpc").collection("scoreboard").findOne({ name: username });
-    
+    const result = await client.db("rps").collection("scoreboard").findOne({ name: username });
+
 	return result;
 }
 
@@ -116,13 +122,13 @@ async function createUser(client, username, result) {
 		var score = "0 W - 0 L";
 	}
 
-    await client.db("rpc").collection("scoreboard").insertOne(newListing);
-    
+    await client.db("rps").collection("scoreboard").insertOne(newListing);
+
 	return score;
 }
 
 async function updateUser(client, username, result) {
-	const res = await client.db("rpc").collection("scoreboard").findOne({ name: username });
+	const res = await client.db("rps").collection("scoreboard").findOne({ name: username });
 
 	var w = res.wins;
 	var l = res.losses;
@@ -142,7 +148,7 @@ async function updateUser(client, username, result) {
 		var score = w + " W - " + l + " L";
 	}
 
-    await client.db("rpc").collection("scoreboard").updateOne({ name: username }, { $set: updatedListing });
+    await client.db("rps").collection("scoreboard").updateOne({ name: username }, { $set: updatedListing });
 
 	return score;
 }
@@ -157,18 +163,18 @@ async function getJoke(client) {
 	return answer;
 }
 
-function createSelection() {
+function createSelection() { //warten bis ich ergebnis zurück schicke, im Client das bild(rechts) und unten das ergebnis erst danach aktualiesiern
 	let answer = Math.floor(Math.random() * 3) + 1;
 
 	if (answer === 1)
-		answer = "Schere";
+		answer = "Scissors";
 	else if (answer === 2)
-		answer = "Stein";
+		answer = "Rock";
 	else if (answer === 3)
-		answer = "Papier";
-			
-	if (answer !== "Schere" && answer !== "Stein" && answer !== "Papier") {
-		answer = "Fehlerhafte Eingabe";
+		answer = "Paper";
+
+	if (answer !== "Scissors" && answer !== "Rock" && answer !== "Paper") {
+		answer = "Wrong Input";
 	}
 
 	return answer;

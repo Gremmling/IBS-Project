@@ -17,6 +17,8 @@
 			margin-bottom: 8px;
 			margin-left: 4px;
 			margin-right: 4px;
+			border-style: solid;
+			border-color: black;
 		}
 
 		button{
@@ -47,6 +49,7 @@
 		.Row {
 			display: table;
 			width: 80%;
+			margin-bottom: 3%;
 		}
 
 		.Column {
@@ -76,25 +79,25 @@
 		</div>
 		<div>
 			<div class="divCenter">
-				<input readonly id="top_left" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="top_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="top_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<div readonly id="00" class="ticTacToeField" onclick="tickTacToe('00')"></div>
+				<div readonly id="01" class="ticTacToeField" onclick="tickTacToe('01')"></div>
+				<div readonly id="02" class="ticTacToeField" onclick="tickTacToe('02')"></div>
 			</div>
 			<div class="divCenter">
-				<input readonly id="middle_left" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="middle_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="middle_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<div readonly id="10" class="ticTacToeField" onclick="tickTacToe('10')"></div>
+				<div readonly id="11" class="ticTacToeField" onclick="tickTacToe('11')"></div>
+				<div readonly id="12" class="ticTacToeField" onclick="tickTacToe('12')"></div>
 			</div>
 			<div class="divCenter">
-				<input readonly id="bottom_left" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="bottom_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
-				<input readonly id="bottom_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<div readonly id="20" class="ticTacToeField" onclick="tickTacToe('20')"></div>
+				<div readonly id="21" class="ticTacToeField" onclick="tickTacToe('21')"></div>
+				<div readonly id="22" class="ticTacToeField" onclick="tickTacToe('22')"></div>
 			</div>
 		</div>
 		<div class="buttonsDiv">
 			<button onclick="window.location.href='games.html'">Go back</button>
 			<button onclick="window.location.href='FrontPage.html'">Go home</button>
-			<button>Reset</button>
+			<button onclick="reset()">Reset</button>
 		</div>
 	</body>
 </html>
