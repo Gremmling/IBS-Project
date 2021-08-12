@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		h1{
+			text-align: center;
+			font-size: 42px;
+		}
+
+		h2{
+			margin-left: 5%;
+			font-size: 28px;
+		}
+
+		.ticTacToeField{
+			width: 12%;
+			height: 200px;
+			margin-bottom: 8px;
+			margin-left: 4px;
+			margin-right: 4px;
+		}
+
+		button{
+			width: 12%;
+			height: 50px;
+			margin-right: 3%;
+			margin-bottom: 30px;
+			display: inline-block;
+			border-radius: 8px;
+			box-shadow: 4px 4px;
+		}
+
+		.divCenter{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.buttonsDiv{
+			width: 100%;
+			margin-top: 2%;
+			margin-left: 5%;
+			margin-right: 5%;
+			margin-bottom: 3%;
+			float: left;
+		}
+
+		.Row {
+			display: table;
+			width: 80%;
+		}
+
+		.Column {
+			display: table-cell;
+		}
+	</style>
+	<head>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="script.js"></script>
+		<title>Tic-Tac-Toe</title>
+	</head>
+	<body>
+		<h1>Tic Tac Toe</h1>
+		<div class="Row">
+			<div class="Column" id="player One">
+				<h2>Player One:</h2>
+			</div>
+			<div class="Column">
+				<img src='pictures/cross.png'>
+			</div>
+			<div class="Column" id="player Two">
+				<h2>Player Two:</h2>
+			</div>
+			<div class="Column">
+				<img src='pictures/circle.png'>
+			</div>
+		</div>
+		<div>
+			<div class="divCenter">
+				<input readonly id="top_left" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="top_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="top_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+			</div>
+			<div class="divCenter">
+				<input readonly id="middle_left" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="middle_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="middle_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+			</div>
+			<div class="divCenter">
+				<input readonly id="bottom_left" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="bottom_middle" class="ticTacToeField" onclick="tickTacToe()"></input>
+				<input readonly id="bottom_right" class="ticTacToeField" onclick="tickTacToe()"></input>
+			</div>
+		</div>
+		<div class="buttonsDiv">
+			<button onclick="window.location.href='games.html'">Go back</button>
+			<button onclick="window.location.href='FrontPage.html'">Go home</button>
+			<button>Reset</button>
+		</div>
+	</body>
+</html>
