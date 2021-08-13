@@ -13,6 +13,8 @@ var field = [
 	[0, 0, 0]
 ];
 var turn = 0;
+var gameOver = false;
+
 
 const axiosInstance = axios.create({
 	baseURL: 'http://localhost:5000'
@@ -48,7 +50,7 @@ function selection(x) {
 			document.getElementById("alexaChoice").innerHTML = picture;
 
 			document.getElementById("result").innerHTML = data.result;
-			if (uname) 
+			if (uname)
 				document.getElementById("score").innerHTML = "Your score against Alexa: " + data.score;
 			else
 				document.getElementById("score").innerHTML = "Insert a username to see your score against Alexa.";
@@ -85,6 +87,9 @@ function newJoke() {
 }
 
 function tickTacToe(position) {
+	if (gameOver) {
+		return;
+	}
 	let row = parseInt(position.charAt(0));
 	let col = parseInt(position.charAt(1));
 	if (field[row][col] != 0) {
@@ -102,10 +107,16 @@ function tickTacToe(position) {
 	}
 	let winner = win();
 	if (winner > 0) {
-		console.log("Winner is:" + winner);
+		if (winner === 1) {
+			document.getElementById("winner").innerHTML = "Player One";
+		}
+		else {
+			document.getElementById("winner").innerHTML = "Player Two";
+		}
+		gameOver = true;
 	}
 	else if (turn === 9) {
-		console.log("Unentschieden");
+		document.getElementById("winner").value = "Tie";
 	}
 }
 
@@ -123,6 +134,8 @@ function reset() {
 			document.getElementById(row + col).innerHTML = "";
 		}
 	}
+	document.getElementById("winner").innerHTML = "";
+	gameOver = false;
 }
 
 function win() {
