@@ -25,6 +25,10 @@
 			margin-bottom: 30px;
 		}
 
+		#jokeAdded{
+			margin-bottom: 30px;
+		}
+
 		.buttonStyle{
 			border-radius: 8px;
 			font-size: 50px;
@@ -39,10 +43,17 @@
 
 		.inputStyle{
 			width: 90%;
-			height: 500px;
+			height: 300px;
+			margin-bottom: 30px;
+		}
+
+		.inputStyle2{
+			width: 90%;
+			height: 100px;
 			margin-bottom: 30px;
 		}
 	</style>
+
 	<head>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="script.js"></script>
@@ -58,7 +69,11 @@
 				<button onclick="jokeWithAPI()">Tell joke (API)</button>
 				<button onclick="jokeWithDatabase()">Tell Joke (Database)</button>
 			</div>
-			<input readonly id="joke" class="inputStyle"></input>
+			<input type="text" readonly id="joke" class="inputStyle"></input>
+			<h3>Got an idea for a new joke? Enter it here and it will be added to the database:</h3>
+			<input type="text" id="newJoke" class="inputStyle2"></input>
+			<div id="jokeAdded"></div>
+			<button onclick="newJoke()">Add new joke</button>
 			<button onclick="window.location.href='FrontPage.html'">Go back</button>
 		</div>
 	</body>

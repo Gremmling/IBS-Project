@@ -31,6 +31,12 @@ app.get("/jokeWithDatabase", (req, res) => {
 	})
 })
 
+app.post("/newJoke", (req, res) => {
+	connectDatabase(req.body, 2).then(answer => {
+		res.send(answer);
+	})
+})
+
 app.post("/rps/initRPS", (req, res) => {
 	//alexa sagen, dass jetzt ein spiel startet
 });
@@ -78,6 +84,10 @@ async function connectDatabase(data, value) {
 
 		else if (value === 1) {
 			var answer = await getJoke(client);
+		}
+
+		else if (value === 2) {
+			var answer = await newJoke(client, data.joke);
 		}
     }
 
@@ -163,6 +173,27 @@ async function getJoke(client) {
 	return answer;
 }
 
+async function newJoke(client, joke) {
+	const result = await client.db("jokes").collection("collection").findOne({ joke: joke });
+
+	if (result)
+		var answer = "Joke already exists!";
+	
+	else {
+		let length = await client.db("jokes").collection("collection").countDocuments({});
+		let n = length + 1;
+
+		await client.db("jokes").collection("collection").insertOne({
+            joke: joke,
+            number: n
+		});
+
+		var answer = "Joke successfully added!"
+	}
+
+	return answer;
+}
+
 function createSelection() { //warten bis ich ergebnis zurück schicke, im Client das bild(rechts) und unten das ergebnis erst danach aktualiesiern
 	let answer = Math.floor(Math.random() * 3) + 1;
 
@@ -183,7 +214,7 @@ function createSelection() { //warten bis ich ergebnis zurück schicke, im Clien
 function getResult(x, y) {
 	var result = "<h2>You win!</h2>";
 
-	if ((x === "Schere" && y === "Stein") || (x === "Stein" && y === "Papier") || (x === "Papier" && y === "Schere"))
+	if ((x === "Scissors" && y === "Rock") || (x === "Rock" && y === "Paper") || (x === "Paper" && y === "Scissors"))
 		result = "<h2>You lose!</h2>";
 
 	else if (x === y)

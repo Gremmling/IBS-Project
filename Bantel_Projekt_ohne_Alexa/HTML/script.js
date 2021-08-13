@@ -36,8 +36,6 @@ function selection(x) {
 
 	axiosInstance.post('/rps/userSelection', { "selection": choice, "username": uname })
 		.then(({ data }) => {
-			console.log(data);
-
 			var picture;
 
 			if (data.selection === "Scissors")
@@ -50,7 +48,10 @@ function selection(x) {
 			document.getElementById("alexaChoice").innerHTML = picture;
 
 			document.getElementById("result").innerHTML = data.result;
-			document.getElementById("score").innerHTML = "Your score against Alexa: " + data.score;
+			if (uname) 
+				document.getElementById("score").innerHTML = "Your score against Alexa: " + data.score;
+			else
+				document.getElementById("score").innerHTML = "Insert a username to see your score against Alexa.";
 		});
 }
 
@@ -66,6 +67,21 @@ function jokeWithDatabase() {
 		.then(({ data }) => {
 			document.getElementById("joke").value = data;
 		});
+}
+
+function newJoke() {
+	let joke = document.getElementById("newJoke").value;
+
+	if (joke == "")
+		document.getElementById("jokeAdded").innerHTML = "Enter a joke first!";
+
+	else {
+		axiosInstance.post('/newJoke', { "joke": joke })
+			.then(({ data }) => {
+				document.getElementById("jokeAdded").innerHTML = data;
+				document.getElementById("newJoke").value = "";
+			});
+	}
 }
 
 function tickTacToe(position) {
@@ -148,5 +164,4 @@ function winCondition(pos) {
 	else {
 		return 0;
 	}
-
 }
