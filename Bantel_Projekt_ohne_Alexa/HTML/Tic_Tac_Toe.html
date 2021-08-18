@@ -7,18 +7,27 @@
 		}
 
 		h2{
-			margin-left: 5%;
+			text-align: center;
+			font-size: 28px;
+		}
+
+		h3{
+			margin-left: 10%;
 			font-size: 28px;
 		}
 
 		.ticTacToeField{
-			width: 12%;
+			width: 25%;
+			max-width: 300px;
 			height: 200px;
 			margin-bottom: 8px;
 			margin-left: 4px;
 			margin-right: 4px;
 			border-style: solid;
 			border-color: black;
+			display: flex;
+  			justify-content: center;
+  			align-items: center;
 		}
 
 		button{
@@ -28,11 +37,19 @@
 			margin-bottom: 30px;
 			display: inline-block;
 			border-radius: 8px;
-			box-shadow: 4px 4px;
+		}
+
+		.resetbutton{
+			width: 32%;
+			height: 50px;
+			margin-top: 30px;
+			margin-left: 10%;
+			display: inline-block;
+			border-radius: 8px;
 		}
 
 		.divCenter{
-			display:flex;
+			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
@@ -55,54 +72,45 @@
 		}
 
 		.colLeft{
-			width: 40%;
+			width: 30%;
 			margin-bottom: 30px;
 			float: left;
 		}
 
 		.colRight{
-			width: 100%;
+			width: 70%;
 			margin-bottom: 30px;
 			float: right;
 		}
 
-		.winnerStyle{
-			margin-top: 5%;
-			width: 20%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
 		#winner{
-			margin-left: 2%;
-			font-size: x-large;
+			margin-bottom: 30px;
 		}
-
+		
 	</style>
+
 	<head>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="script.js"></script>
 		<title>Tic-Tac-Toe</title>
 	</head>
+
 	<body>
 		<h1>Tic Tac Toe</h1>
 		<div class="row">
 			<div class="colLeft">
 				<div id="player One">
-					<h2>Player One: <img src='pictures/cross.png'>
-					</h2>
+					<h3>Player One: <img src="pictures/cross.png" style="height: 28px;">
+					</h3>
 				</div>
 				<div id="player Two">
-					<h2>Player Two: <img src='pictures/circle.png'>
-					</h2>
+					<h3>Player Two: <img src="pictures/circle.png" style="height: 28px;">
+					</h3>
 				</div>
-			</div>
-			<div class="winnerStyle">
-				<h2>The Winner is:</h2>
-				<div id="winner"></div>
+				<button class="resetbutton" onclick="reset()">Reset</button>
 			</div>
 			<div class="colRight">
+				<div id="winner"></div>
 				<div class="divCenter">
 					<div readonly id="00" class="ticTacToeField" onclick="tickTacToe('00')"></div>
 					<div readonly id="01" class="ticTacToeField" onclick="tickTacToe('01')"></div>
@@ -123,7 +131,6 @@
 		<div class="buttonsDiv">
 			<button onclick="window.location.href='games.html'">Go back</button>
 			<button onclick="window.location.href='FrontPage.html'">Go home</button>
-			<button onclick="reset()">Reset</button>
 		</div>
 	</body>
 </html>

@@ -1,7 +1,3 @@
-var options = ['Schere', 'Stein', 'Papier'];
-var max = 2;
-var min = 0;
-
 var playerOne = 1;
 var playerTwo = 2;
 var currentPlayer = 1;
@@ -108,15 +104,15 @@ function tickTacToe(position) {
 	let winner = win();
 	if (winner > 0) {
 		if (winner === 1) {
-			document.getElementById("winner").innerHTML = "Player One";
+			document.getElementById("winner").innerHTML = "<h2>Player One wins!</h2>";
 		}
 		else {
-			document.getElementById("winner").innerHTML = "Player Two";
+			document.getElementById("winner").innerHTML = "<h2>Player Two wins!</h2>";
 		}
 		gameOver = true;
 	}
 	else if (turn === 9) {
-		document.getElementById("winner").value = "Tie";
+		document.getElementById("winner").innerHTML = "<h2>Tie!</h2>";
 	}
 }
 
@@ -134,6 +130,7 @@ function reset() {
 			document.getElementById(row + col).innerHTML = "";
 		}
 	}
+	turn = 0;
 	document.getElementById("winner").innerHTML = "";
 	gameOver = false;
 }
