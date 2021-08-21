@@ -82,6 +82,11 @@ function newJoke() {
 	}
 }
 
+function dummy(position) {
+	axiosInstance.post('/ticTacToe', ({ 'x': 1, 'y': 0, id: id }))
+		.catch()//abfangt von falschen x/y koordinaten
+}
+
 function tickTacToe(position) {
 	if (gameOver) {
 		return;

@@ -14,16 +14,57 @@ app.use(bodyParser.json());
 
 
 //Websocket: (Fragen?)
+
+const clients = {}; //dictornary erstellen
+
 const serverSocketPort = 7777;
-const serverSocket = require('websocket').server;
-const http = require('http');
+const serverSocket = require('websocket').server; //nur den Websocket Server teil nutzen
+const http = require('http'); //http nutzen
 
 //http an websocket packen:
-const server = http.createServer();
+const server = http.createServer(); //server created
 server.listen(serverSocketPort);
-const websocketServer = new serverSocket({
+const websocketServer = new serverSocket({ //neuen Websocket Server erstellen der auf Port 7777 hört
 	httpServer: server
 });
+
+//unique userid für jeden Nutzer anlegen:
+const createUniqueID = () => {
+	// Random zahl erzeugen, diese in einen String speichern und die erste Stelle erstetzen
+	const id = () => Math.floor((1 + Math.random() * 0 * 10000).toString(16).substring(1));
+	return id() + id() + '-' + id();
+};
+
+websocketServer.on('connect', function (connection) {
+	//die verbindung für die Id speichern.
+	const id = createUniqueID();
+	clients[id] = connection;
+	//länge der liste > 2 dann einfach nicht reinspeichern, client sagen das es nicht geht
+	//an script die id senden damit ich damit weiter machen kann connection.send({'target': 'connection.successfully', 'value': id});
+	//auch an die andere id schicken, dann hat jeder beide und kann überprüfen ob er die gleiche hat
+});
+
+websocketServer.on('close', function (connection ,resonCode, description) {//aus clients rausnehmen und anderen benachrichtigen
+	//liste durch und richtige connection rauslöschen und anderen benachrichtigen
+	clients[id].send({ 'target': 'dissconected' }); //id vom anderen spieler
+});
+
+app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
+	//abfragen welcher speiler gespielt hat
+	//abfragen wohin er geklickt hat
+	//überprüfen wo schon was ist und wo es hinkommt
+	//überprüfung falsch: res.send("falschj", 400); /http
+	//überprüfung richtig
+	//feld updaten
+	//überprüfen ob durch den zug gewonnen wurde
+	//wenn ja:
+	clients[id].send({ 'target': 'winner', 'value': winnerID }); //schleife die allen das sendet
+	//wenn nicht:
+	clients[id].send({'target': 'fieldUpdated', 'value': {'x': 1, 'y': 0} }); //websocket //id = id vom anderen spieler (der von dem die nachricht NICHT kam)
+	//und res.send(200);  /http immer kommen auser im fehlerfall
+});
+
+
 
 
 
