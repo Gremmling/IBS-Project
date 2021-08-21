@@ -13,6 +13,23 @@ app.use(cors()); //andere pakete wollen wir verwenden
 app.use(bodyParser.json());
 
 
+//Websocket: (Fragen?)
+const serverSocketPort = 7777;
+const serverSocket = require('websocket').server;
+const http = require('http');
+
+//http an websocket packen:
+const server = http.createServer();
+server.listen(serverSocketPort);
+const websocketServer = new serverSocket({
+	httpServer: server
+});
+
+
+
+
+
+
 app.get("/games/tickTacToe", (req, res) => {
 	res.send("hat geklappt")
 })
@@ -178,7 +195,7 @@ async function newJoke(client, joke) {
 
 	if (result)
 		var answer = "Joke already exists!";
-	
+
 	else {
 		let length = await client.db("jokes").collection("collection").countDocuments({});
 		let n = length + 1;
