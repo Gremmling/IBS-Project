@@ -4,9 +4,11 @@ const bodyParser = require('body-parser'); //body aus post auslesen
 const cors = require('cors');
 const { response } = require('express');
 const axios = require('axios').default;
+const WebSocketServer = require('websocket').server; //nur den Websocket Server teil nutzen
+const http = require('http'); //http nutzen
 
 // mongodb kram
-const { MongoClient } = require('mongodb');
+const { MongoClient, ReturnDocument } = require('mongodb');
 
 const app = express(); //der express servers wird erstellt
 app.use(cors()); //andere pakete wollen wir verwenden
@@ -15,17 +17,27 @@ app.use(bodyParser.json());
 
 //Websocket: (Fragen?)
 
+//variablen fürs TicTacToe:
+var field = [
+	[0, 0, 0],
+	[0, 0, 0],
+	[0, 0, 0]
+];
+var currentPlayer = 1;
+
+
 const clients = {}; //dictornary erstellen
 
-const serverSocketPort = 7777;
-const serverSocket = require('websocket').server; //nur den Websocket Server teil nutzen
-const http = require('http'); //http nutzen
-
 //http an websocket packen:
-const server = http.createServer(); //server created
-server.listen(serverSocketPort);
-const websocketServer = new serverSocket({ //neuen Websocket Server erstellen der auf Port 7777 hört
-	httpServer: server
+const server = http.createServer((req, res) => {
+	console.log("Moiiiiin");
+	res.writeHead(404);
+	res.end();
+}); //server created
+server.listen(8080, () => console.log("HTTP Server listening on Port 8080"));
+const websocketServer = new WebSocketServer({
+	httpServer: server,
+	autoAcceptConnection: true
 });
 
 //unique userid für jeden Nutzer anlegen:
@@ -35,32 +47,53 @@ const createUniqueID = () => {
 	return id() + id() + '-' + id();
 };
 
-websocketServer.on('connect', function (connection) {
-	//die verbindung für die Id speichern.
-	const id = createUniqueID();
-	clients[id] = connection;
-	//länge der liste > 2 dann einfach nicht reinspeichern, client sagen das es nicht geht
-	//an script die id senden damit ich damit weiter machen kann connection.send({'target': 'connection.successfully', 'value': id});
-	//auch an die andere id schicken, dann hat jeder beide und kann überprüfen ob er die gleiche hat
+//die verbindung für die Id speichern.
+websocketServer.on('request', function (req) {
+	//wenn dictionary kleiner 2 ist kann gespeichert werden
+	if (Object.keys(clients).length < 2) {
+		console.log('Moiiiin');
+		const id = createUniqueID();
+		const connection = req.accept(null, req.origin);
+		clients[id] = connection;
+		//an script die id senden damit ich damit weiter machen kann
+		connection.send(`{'target': 'connection.successfully', 'value': ${id}}`);
+	}
+	//wenn nicht fehler senden
+	else {
+		req.reject();
+	}
 });
 
 websocketServer.on('close', function (connection ,resonCode, description) {//aus clients rausnehmen und anderen benachrichtigen
-	//liste durch und richtige connection rauslöschen und anderen benachrichtigen
-	clients[id].send({ 'target': 'dissconected' }); //id vom anderen spieler
+	//liste durch und richtige connection rauslöschen und anderen benachrichtigen´
+	for (const [id, con] of Object.entries(clients)){
+		if (con == connection)
+			delete clients[id];
+		else {
+			clients[id].send(`{ 'target': 'dissconected' }`); //id vom anderen spieler
+		}
+	}
 });
 
 app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
-	//abfragen welcher speiler gespielt hat
+	//abfragen welcher spieler gespielt hat (mithilfe der ID)
+
 	//abfragen wohin er geklickt hat
+
 	//überprüfen wo schon was ist und wo es hinkommt
-	//überprüfung falsch: res.send("falschj", 400); /http
+
+	//überprüfung falsch: res.send("falsch", 400); /http
+
 	//überprüfung richtig
-	//feld updaten
+
+	//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
+
 	//überprüfen ob durch den zug gewonnen wurde
+
 	//wenn ja:
-	clients[id].send({ 'target': 'winner', 'value': winnerID }); //schleife die allen das sendet
+	clients[id].send(`{ 'target': 'winner', 'value': ${winnerID} }`); //schleife die allen das sendet
 	//wenn nicht:
-	clients[id].send({'target': 'fieldUpdated', 'value': {'x': 1, 'y': 0} }); //websocket //id = id vom anderen spieler (der von dem die nachricht NICHT kam)
+	clients[id].send(`{'target': 'fieldUpdated', 'value': ${position}`); //websocket //id = id vom anderen spieler (der von dem die nachricht NICHT kam)
 	//und res.send(200);  /http immer kommen auser im fehlerfall
 });
 

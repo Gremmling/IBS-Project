@@ -1,0 +1,4 @@
+backend starten mit:
+	in logic ordner, dann npm start
+frontend starten mit:
+	in html ordner, dann python -m http.server

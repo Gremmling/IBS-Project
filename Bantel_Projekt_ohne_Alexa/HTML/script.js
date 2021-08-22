@@ -10,6 +10,47 @@ var field = [
 ];
 var turn = 0;
 var gameOver = false;
+var id;
+
+const websocket = new WebSocket('ws://localhost:8080'); //verbindung zum websocket backend aufbauen
+
+websocket.onopen = () => { //connection öffnen => bekommen wir das hier
+	console.log("Connected to WS Server");
+}
+
+websocket.onerror = (err) => { //connection fehler => bekommen wir das hier
+	console.log(err.constructor);
+	console.log("WS Error", err);
+}
+
+websocket.onclose = (closeCode) => { //connection schließen => bekommen wir das hier
+	console.log("WS Closed", closeCode);
+}
+
+websocket.onmessage = (message) => { //gespräch läuft hier ab //
+	console.log("WS Message", message);
+	message = JSON.parse(message);
+	const target = message.target;
+	if (target === "connection.successfully"){
+		id = message.value;
+		return;
+	}
+	if(target === "connection.successfully")// nächste target möglichkeit abarbeiten
+
+}
+
+
+function dummy(position) {
+	axiosInstance.post('/ttt', ({ 'x': 1, 'y': 0, id: id })) //hinterer Teil geht in request // die message im server auch parsen wie oben und dann einspeichern und weiter gehts
+		.catch(() =>
+		{ document.getElementById("winner").innerHTML = "Falsche Coordinaten";})//abfangt von falschen x/y koordinaten
+}
+
+function ticTacToe() {
+
+}
+
+
 
 
 const axiosInstance = axios.create({
@@ -82,46 +123,43 @@ function newJoke() {
 	}
 }
 
-function dummy(position) {
-	axiosInstance.post('/ticTacToe', ({ 'x': 1, 'y': 0, id: id }))
-		.catch()//abfangt von falschen x/y koordinaten
-}
 
-function tickTacToe(position) {
-	if (gameOver) {
-		return;
-	}
-	let row = parseInt(position.charAt(0));
-	let col = parseInt(position.charAt(1));
-	if (field[row][col] != 0) {
-		return;
-	}
-	field[row][col] = currentPlayer;
-	turn++;
-	if (currentPlayer == 1) {
-		document.getElementById(position).innerHTML = imgPlayerOne;
-		currentPlayer = 2;
-	}
-	else{
-		document.getElementById(position).innerHTML = imgPlayerTwo;
-		currentPlayer = 1;
-	}
-	let winner = win();
-	if (winner > 0) {
-		if (winner === 1) {
-			document.getElementById("winner").innerHTML = "<h2>Player One wins!</h2>";
-		}
-		else {
-			document.getElementById("winner").innerHTML = "<h2>Player Two wins!</h2>";
-		}
-		gameOver = true;
-	}
-	else if (turn === 9) {
-		document.getElementById("winner").innerHTML = "<h2>Tie!</h2>";
-	}
-}
+// function tickTacToe(position) {
+// 	if (gameOver) {
+// 		return;
+// 	}
+// 	let row = parseInt(position.charAt(0));
+// 	let col = parseInt(position.charAt(1));
+// 	if (field[row][col] != 0) {
+// 		return;
+// 	}
+// 	field[row][col] = currentPlayer;
+// 	turn++;
+// 	if (currentPlayer == 1) {
+// 		document.getElementById(position).innerHTML = imgPlayerOne;
+// 		currentPlayer = 2;
+// 	}
+// 	else{
+// 		document.getElementById(position).innerHTML = imgPlayerTwo;
+// 		currentPlayer = 1;
+// 	}
+// 	let winner = win();
+// 	if (winner > 0) {
+// 		if (winner === 1) {
+// 			document.getElementById("winner").innerHTML = "<h2>Player One wins!</h2>";
+// 		}
+// 		else {
+// 			document.getElementById("winner").innerHTML = "<h2>Player Two wins!</h2>";
+// 		}
+// 		gameOver = true;
+// 	}
+// 	else if (turn === 9) {
+// 		document.getElementById("winner").innerHTML = "<h2>Tie!</h2>";
+// 	}
+// }
 
 function reset() {
+	websocket.close();
 	field = [
 		[0, 0, 0],
 		[0, 0, 0],
@@ -140,43 +178,43 @@ function reset() {
 	gameOver = false;
 }
 
-function win() {
-	for (i = 0; i < field.length; i++){
-		let posRow = '';
-		let posCol = '';
-		for (j = 0; j < field.length; j++){
-			posRow = posRow + field[i][j].toString();
-			posCol = posCol + field[j][i].toString();
-		}
-		let winRow = winCondition(posRow);
-		let winCol = winCondition(posCol);
-		if (winRow > 0) {
-			return winRow;
-		}
-		else if(winCol > 0) {
-			return winCol;
-		}
-	}
+// function win() {
+// 	for (i = 0; i < field.length; i++){
+// 		let posRow = '';
+// 		let posCol = '';
+// 		for (j = 0; j < field.length; j++){
+// 			posRow = posRow + field[i][j].toString();
+// 			posCol = posCol + field[j][i].toString();
+// 		}
+// 		let winRow = winCondition(posRow);
+// 		let winCol = winCondition(posCol);
+// 		if (winRow > 0) {
+// 			return winRow;
+// 		}
+// 		else if(winCol > 0) {
+// 			return winCol;
+// 		}
+// 	}
 
-	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString());
-	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString());
-	if (dia01 > 0) {
-		return dia01;
-	}
-	else if (dia02 > 0) {
-		return dia02;
-	}
-}
+// 	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString());
+// 	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString());
+// 	if (dia01 > 0) {
+// 		return dia01;
+// 	}
+// 	else if (dia02 > 0) {
+// 		return dia02;
+// 	}
+// }
 
 
-function winCondition(pos) {
-	if (pos === '111') {
-		return 1;
-	}
-	else if (pos === '222') {
-		return 2;
-	}
-	else {
-		return 0;
-	}
-}
+// function winCondition(pos) {
+// 	if (pos === '111') {
+// 		return 1;
+// 	}
+// 	else if (pos === '222') {
+// 		return 2;
+// 	}
+// 	else {
+// 		return 0;
+// 	}
+// }
