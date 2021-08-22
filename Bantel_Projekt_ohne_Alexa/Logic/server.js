@@ -23,8 +23,7 @@ var field = [
 	[0, 0, 0],
 	[0, 0, 0]
 ];
-var currentPlayer = 1;
-var idLastPLayer;
+var idLastPLayer = "";
 
 const clients = {}; //dictornary erstellen
 
@@ -43,8 +42,9 @@ const websocketServer = new WebSocketServer({
 //unique userid für jeden Nutzer anlegen:
 const createUniqueID = () => {
 	// Random zahl erzeugen, diese in einen String speichern und die erste Stelle erstetzen
-	const id = () => Math.floor((1 + Math.random() * 0 * 10000).toString(16).substring(1));
-	return id() + id() + '-' + id();
+	let id = Math.floor(Math.random() * 1000);
+	console.log(id);
+	return id;
 };
 
 //die verbindung für die Id speichern.
@@ -56,7 +56,7 @@ websocketServer.on('request', function (req) {
 		const connection = req.accept(null, req.origin);
 		clients[id] = connection;
 		//an script die id senden damit ich damit weiter machen kann
-		connection.send(`{'target': 'connection.successfully', 'value': ${id}}`);
+		connection.send(`{"target": "connection.successfully", "value": ${id}}`);
 	}
 	//wenn nicht fehler senden
 	else {
@@ -70,24 +70,26 @@ websocketServer.on('close', function (connection ,resonCode, description) {//aus
 		if (con == connection)
 			delete clients[id];
 		else {
-			clients[id].send(`{ 'target': 'dissconected' }`); //id vom anderen spieler
+			clients[id].send(`{ "target": "disconected" }`); //id vom anderen spieler
 		}
 	}
 });
 
 app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 	const message = JSON.parse(req);
-	const idCurrentPlayer = message.id;
-	const idOtherPlayer;
+	let idCurrentPlayer = message.id;
 	const x = message.x;
 	const y = message.y;
+	const winnerId = "";
+
+	//abfragen welcher spieler gespielt hat (mithilfe der ID) in req steht das
+	let idOtherPlayer = Object.keys(clients).filter((key) => {
+		return key !== idCurrentPlayer;
+	})[0];
+
 	if (idLastPlayer !== idCurrentPlayer) {
 		idLastPLayer = idCurrentPlayer;
-		//wenn ja folgendes nein dann bescheid geben mithilfe von alert
-		//abfragen welcher spieler gespielt hat (mithilfe der ID) in req steht das
-		idOtherPlayer = Object.keys(clients).filter((key) => {
-			return key !== idCurrentPlayer;
-		})[0];
+
 		// testen ob feld verfügbar ist
 		if (field[x][y] === 0) {
 			field[x][y] = idCurrentPlayer;
@@ -95,6 +97,7 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 		//http send, überprüfung falsch: res.send("falsch", 400);
 		else {
 			res.send("wrong", 400);
+			return;
 		}
 
 		//prüfen ob gewonnen wurde
@@ -102,25 +105,86 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 		//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
 		//wenn ja:
 		//schleife die allen das sendet
-		const win = winCondition();
-		if (win) {
+
+		const win = CheckForWinner(idCurrentPlayer, idOtherPlayer);
+		if (win != 0) {
+			if (win === 1) {
+				winnerId = idCurrentPlayer;
+			}
+			else if (win === 2) {
+				winnerId = idOtherPlayer;
+			}
+			else if (win === -1) {
+				winnerId = "draw";
+			}
 			for (const [id, con] of Object.entries(clients)) {
-				clients[id].send(`{ 'target': 'winner', 'value': ${winnerID} }`);
+				clients[id].send(`{ "target": "winner", "value": ${winnerId} }`);
 			}
 		}
+
 		//wenn nicht:
 		else {
-			clients[idOtherPlayer].send(`{'target': 'fieldUpdated', 'value': {'x': ${x}, 'y': ${y}}`); //websocket //id = id vom anderen spieler (der von 	dem die nachricht NICHT kam)
+			clients[idOtherPlayer].send(`{"target": "fieldUpdated", "value": {"x": ${x}, "y": ${y}}`); //websocket //id = id vom anderen spieler (der von 	dem die nachricht NICHT kam)
 		}
 		//und res.send(200);  /http immer kommen auser im fehlerfall
+		res.send(200);
 	}
 	else {
 		res.send("Not your Turn");
 	}
 });
 
-function winCondition() {
+function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
+	let currentPlayerString = idCurrentPlayer.toString().repeat(3);
+	let otherPlayerString = idOtherPlayer.toString().repeat(3);
+	let full = 0;
+	//spalten und zeilen checken
+	for (i = 0; i < field.length; i++){
+		let posRow = '';
+		let posCol = '';
+		for (j = 0; j < field.length; j++){
+			posRow = posRow + field[i][j].toString();
+			posCol = posCol + field[j][i].toString();
+			if (field[i][j] === 0) {
+				full = 1;
+			}
+		}
+		let winRow = winCondition(posRow, currentPlayerString, otherPlayerString);
+		let winCol = winCondition(posCol, currentPlayerString, otherPlayerString);
+		if (winRow > 0) {
+			return winRow;
+		}
+		else if(winCol > 0) {
+			return winCol;
+		}
+	}
+	//diagonalen checken
+	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString(), currentPlayerString, otherPlayerString);
+	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString(), currentPlayerString, otherPlayerString);
+	if (dia01 > 0) {
+		return dia01;
+	}
+	else if (dia02 > 0) {
+		return dia02;
+	}
+	else if (full === 1){
+		return -1;
+	}
+	else {
+		return 0;
+	}
+}
 
+function winCondition(pos, currentPlayerString, otherPlayerString) {
+	if (pos === currentPlayerString) {
+		return 1;
+	}
+	else if (pos === otherPlayerString) {
+		return 2;
+	}
+	else {
+		return 0;
+	}
 }
 
 

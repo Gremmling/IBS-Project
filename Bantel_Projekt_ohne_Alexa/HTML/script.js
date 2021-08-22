@@ -1,5 +1,3 @@
-var playerOne = 1;
-var playerTwo = 2;
 var currentPlayer = 1;
 var imgPlayerOne = "<img src='pictures/cross.png'>";
 var imgPlayerTwo = "<img src='pictures/circle.png'>";
@@ -8,8 +6,7 @@ var field = [
 	[0, 0, 0],
 	[0, 0, 0]
 ];
-var turn = 0;
-var gameOver = false;
+var amountPlayed = 0;
 var id;
 
 const websocket = new WebSocket('ws://localhost:8080'); //verbindung zum websocket backend aufbauen
@@ -29,25 +26,68 @@ websocket.onclose = (closeCode) => { //connection schließen => bekommen wir das
 
 websocket.onmessage = (message) => { //gespräch läuft hier ab //
 	console.log("WS Message", message);
-	message = JSON.parse(message);
+
+	//newlines austauschen
+	// message = message.data.replace(/\\n/g, "\\n")
+	// 	.replace(/\\'/g, "\\'")
+	// 	.replace(/\\"/g, '\\"')
+	// 	.replace(/\\&/g, "\\&")
+	// 	.replace(/\\r/g, "\\r")
+	// 	.replace(/\\t/g, "\\t")
+	// 	.replace(/\\b/g, "\\b")
+	// 	.replace(/\\f/g, "\\f")
+	// 	.replace(/[\u0000-\u0019]+/g, "");
+	message = JSON.parse(message.data);
+	console.log(message);
 	const target = message.target;
+	console.log(target);
 	if (target === "connection.successfully") {
 		console.log("connected");
 		id = message.value;
 		return;
 	}
-	if (target === "dissconected"){// nächste target möglichkeit abarbeiten
-		console.log("dissconected");
-		alert("Your Enemy dissconected");
+	if (target === "disconected"){// nächste target möglichkeit abarbeiten
+		console.log("disconected");
+		alert("Your Enemy disconected");
 		reset();
 		return;
 	}
 	if (target === "winner") {
 		console.log("game Over");
+		if (message.value === id) {
+			document.getElementById("winner").innerHTML = "You've won!!!";
+		}
+		else if (message.value === "draw") {
+			document.getElementById("winner").innerHTML = "Tie!";
+		}
+		else {
+			document.getElementById("winner").innerHTML = "You've lost!!!";
+		}
 		return;
 	}
 	if (target === "fieldUpdated") {
 		console.log("field updated");
+		let x = message.value.x;
+		let y = message.value.y;
+		let stringPos = x.toString() + y.toString();
+		if (field[x][y] === 0) {
+			field[x][y] = id;
+		}
+		//überrüfen welches Bild dran ist
+		for (let i = 0; i < field.length; i++){
+			for (let j = 0; j < field.length; j++){
+				if (field[i][j] === 0) {
+					amountPlayed++;
+				}
+			}
+		}
+		if ((amountPlayed % 2) === 0) {
+			document.getElementById(stringPos).innerHTML = imgPlayerOne;
+		}
+		else {
+			document.getElementById(stringPos).innerHTML = imgPlayerTwo;
+		}
+		amountPlayed = 0;
 		return;
 	}
 
@@ -141,49 +181,12 @@ function newJoke() {
 	}
 }
 
-
-// function tickTacToe(position) {
-// 	if (gameOver) {
-// 		return;
-// 	}
-// 	let row = parseInt(position.charAt(0));
-// 	let col = parseInt(position.charAt(1));
-// 	if (field[row][col] != 0) {
-// 		return;
-// 	}
-// 	field[row][col] = currentPlayer;
-// 	turn++;
-// 	if (currentPlayer == 1) {
-// 		document.getElementById(position).innerHTML = imgPlayerOne;
-// 		currentPlayer = 2;
-// 	}
-// 	else{
-// 		document.getElementById(position).innerHTML = imgPlayerTwo;
-// 		currentPlayer = 1;
-// 	}
-// 	let winner = win();
-// 	if (winner > 0) {
-// 		if (winner === 1) {
-// 			document.getElementById("winner").innerHTML = "<h2>Player One wins!</h2>";
-// 		}
-// 		else {
-// 			document.getElementById("winner").innerHTML = "<h2>Player Two wins!</h2>";
-// 		}
-// 		gameOver = true;
-// 	}
-// 	else if (turn === 9) {
-// 		document.getElementById("winner").innerHTML = "<h2>Tie!</h2>";
-// 	}
-// }
-
 function reset() {
-	websocket.close();
 	field = [
 		[0, 0, 0],
 		[0, 0, 0],
 		[0, 0, 0]
 	];
-	currentPlayer = 1;
 	for (i = 0; i < field.length; i++){
 		for (j = 0; j < field.length; j++){
 			let row = i.toString();
@@ -191,48 +194,5 @@ function reset() {
 			document.getElementById(row + col).innerHTML = "";
 		}
 	}
-	turn = 0;
 	document.getElementById("winner").innerHTML = "";
-	gameOver = false;
 }
-
-// function win() {
-// 	for (i = 0; i < field.length; i++){
-// 		let posRow = '';
-// 		let posCol = '';
-// 		for (j = 0; j < field.length; j++){
-// 			posRow = posRow + field[i][j].toString();
-// 			posCol = posCol + field[j][i].toString();
-// 		}
-// 		let winRow = winCondition(posRow);
-// 		let winCol = winCondition(posCol);
-// 		if (winRow > 0) {
-// 			return winRow;
-// 		}
-// 		else if(winCol > 0) {
-// 			return winCol;
-// 		}
-// 	}
-
-// 	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString());
-// 	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString());
-// 	if (dia01 > 0) {
-// 		return dia01;
-// 	}
-// 	else if (dia02 > 0) {
-// 		return dia02;
-// 	}
-// }
-
-
-// function winCondition(pos) {
-// 	if (pos === '111') {
-// 		return 1;
-// 	}
-// 	else if (pos === '222') {
-// 		return 2;
-// 	}
-// 	else {
-// 		return 0;
-// 	}
-// }
