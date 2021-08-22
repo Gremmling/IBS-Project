@@ -24,7 +24,7 @@ var field = [
 	[0, 0, 0]
 ];
 var currentPlayer = 1;
-
+var idLastPLayer;
 
 const clients = {}; //dictornary erstellen
 
@@ -76,28 +76,52 @@ websocketServer.on('close', function (connection ,resonCode, description) {//aus
 });
 
 app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
-	//abfragen welcher spieler gespielt hat (mithilfe der ID)
+	const message = JSON.parse(req);
+	const idCurrentPlayer = message.id;
+	const idOtherPlayer;
+	const x = message.x;
+	const y = message.y;
+	if (idLastPlayer !== idCurrentPlayer) {
+		idLastPLayer = idCurrentPlayer;
+		//wenn ja folgendes nein dann bescheid geben mithilfe von alert
+		//abfragen welcher spieler gespielt hat (mithilfe der ID) in req steht das
+		idOtherPlayer = Object.keys(clients).filter((key) => {
+			return key !== idCurrentPlayer;
+		})[0];
+		// testen ob feld verfügbar ist
+		if (field[x][y] === 0) {
+			field[x][y] = idCurrentPlayer;
+		}
+		//http send, überprüfung falsch: res.send("falsch", 400);
+		else {
+			res.send("wrong", 400);
+		}
 
-	//abfragen wohin er geklickt hat
+		//prüfen ob gewonnen wurde
 
-	//überprüfen wo schon was ist und wo es hinkommt
-
-	//überprüfung falsch: res.send("falsch", 400); /http
-
-	//überprüfung richtig
-
-	//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
-
-	//überprüfen ob durch den zug gewonnen wurde
-
-	//wenn ja:
-	clients[id].send(`{ 'target': 'winner', 'value': ${winnerID} }`); //schleife die allen das sendet
-	//wenn nicht:
-	clients[id].send(`{'target': 'fieldUpdated', 'value': ${position}`); //websocket //id = id vom anderen spieler (der von dem die nachricht NICHT kam)
-	//und res.send(200);  /http immer kommen auser im fehlerfall
+		//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
+		//wenn ja:
+		//schleife die allen das sendet
+		const win = winCondition();
+		if (win) {
+			for (const [id, con] of Object.entries(clients)) {
+				clients[id].send(`{ 'target': 'winner', 'value': ${winnerID} }`);
+			}
+		}
+		//wenn nicht:
+		else {
+			clients[idOtherPlayer].send(`{'target': 'fieldUpdated', 'value': {'x': ${x}, 'y': ${y}}`); //websocket //id = id vom anderen spieler (der von 	dem die nachricht NICHT kam)
+		}
+		//und res.send(200);  /http immer kommen auser im fehlerfall
+	}
+	else {
+		res.send("Not your Turn");
+	}
 });
 
+function winCondition() {
 
+}
 
 
 

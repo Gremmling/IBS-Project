@@ -31,23 +31,41 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 	console.log("WS Message", message);
 	message = JSON.parse(message);
 	const target = message.target;
-	if (target === "connection.successfully"){
+	if (target === "connection.successfully") {
+		console.log("connected");
 		id = message.value;
 		return;
 	}
-	if(target === "connection.successfully")// nächste target möglichkeit abarbeiten
+	if (target === "dissconected"){// nächste target möglichkeit abarbeiten
+		console.log("dissconected");
+		alert("Your Enemy dissconected");
+		reset();
+		return;
+	}
+	if (target === "winner") {
+		console.log("game Over");
+		return;
+	}
+	if (target === "fieldUpdated") {
+		console.log("field updated");
+		return;
+	}
 
 }
 
-
-function dummy(position) {
-	axiosInstance.post('/ttt', ({ 'x': 1, 'y': 0, id: id })) //hinterer Teil geht in request // die message im server auch parsen wie oben und dann einspeichern und weiter gehts
-		.catch(() =>
-		{ document.getElementById("winner").innerHTML = "Falsche Coordinaten";})//abfangt von falschen x/y koordinaten
-}
-
-function ticTacToe() {
-
+function ticTacToe(position) {
+	const col = parseInt(position.charAt(1));;
+	const row = parseInt(position.charAt(0));;
+	axiosInstance.post('/ttt', (`{'x': ${row}, 'y': ${col}, id: ${id}}`))
+		.catch((error) => { //abfragen was in der res.send message steht
+			if (error === "Not your Turn") {
+				alert("Wait for your Turn");
+				return;
+			}
+			if (error === "Wrong Coordinates") {
+				alert("Wrong Coordinates");
+			}
+	})
 }
 
 
