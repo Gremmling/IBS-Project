@@ -26,17 +26,6 @@ websocket.onclose = (closeCode) => { //connection schließen => bekommen wir das
 
 websocket.onmessage = (message) => { //gespräch läuft hier ab //
 	console.log("WS Message", message);
-
-	//newlines austauschen
-	// message = message.data.replace(/\\n/g, "\\n")
-	// 	.replace(/\\'/g, "\\'")
-	// 	.replace(/\\"/g, '\\"')
-	// 	.replace(/\\&/g, "\\&")
-	// 	.replace(/\\r/g, "\\r")
-	// 	.replace(/\\t/g, "\\t")
-	// 	.replace(/\\b/g, "\\b")
-	// 	.replace(/\\f/g, "\\f")
-	// 	.replace(/[\u0000-\u0019]+/g, "");
 	message = JSON.parse(message.data);
 	console.log(message);
 	const target = message.target;
@@ -44,6 +33,7 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 	if (target === "connection.successfully") {
 		console.log("connected");
 		id = message.value;
+		alert(id);
 		return;
 	}
 	if (target === "disconected"){// nächste target möglichkeit abarbeiten
@@ -57,7 +47,7 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 		if (message.value === id) {
 			document.getElementById("winner").innerHTML = "You've won!!!";
 		}
-		else if (message.value === "draw") {
+		else if (message.value === -1) {
 			document.getElementById("winner").innerHTML = "Tie!";
 		}
 		else {
@@ -96,13 +86,14 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 function ticTacToe(position) {
 	const col = parseInt(position.charAt(1));;
 	const row = parseInt(position.charAt(0));;
-	axiosInstance.post('/ttt', (`{'x': ${row}, 'y': ${col}, id: ${id}}`))
+	axiosInstance.post('/ttt', {x: row, y: col, id: id})
 		.catch((error) => { //abfragen was in der res.send message steht
-			if (error === "Not your Turn") {
+			console.log(error.response.data);
+			if (error.response.data === "Not your Turn") {
 				alert("Wait for your Turn");
 				return;
 			}
-			if (error === "Wrong Coordinates") {
+			if (error.response.data === "Wrong Coordinates") {
 				alert("Wrong Coordinates");
 			}
 	})

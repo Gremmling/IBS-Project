@@ -2,7 +2,6 @@
 const express = require('express'); //server selber
 const bodyParser = require('body-parser'); //body aus post auslesen
 const cors = require('cors');
-const { response } = require('express');
 const axios = require('axios').default;
 const WebSocketServer = require('websocket').server; //nur den Websocket Server teil nutzen
 const http = require('http'); //http nutzen
@@ -23,7 +22,7 @@ var field = [
 	[0, 0, 0],
 	[0, 0, 0]
 ];
-var idLastPLayer = "";
+var idLastPlayer = "";
 
 const clients = {}; //dictornary erstellen
 
@@ -76,11 +75,11 @@ websocketServer.on('close', function (connection ,resonCode, description) {//aus
 });
 
 app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
-	const message = JSON.parse(req);
+	const message = req.body;
 	let idCurrentPlayer = message.id;
 	const x = message.x;
 	const y = message.y;
-	const winnerId = "";
+	var winnerId = "";
 
 	//abfragen welcher spieler gespielt hat (mithilfe der ID) in req steht das
 	let idOtherPlayer = Object.keys(clients).filter((key) => {
@@ -88,15 +87,16 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 	})[0];
 
 	if (idLastPlayer !== idCurrentPlayer) {
-		idLastPLayer = idCurrentPlayer;
+
 
 		// testen ob feld verfügbar ist
 		if (field[x][y] === 0) {
 			field[x][y] = idCurrentPlayer;
+			idLastPlayer = idCurrentPlayer;
 		}
 		//http send, überprüfung falsch: res.send("falsch", 400);
 		else {
-			res.send("wrong", 400);
+			res.send("Wrong Coordinates", 400);
 			return;
 		}
 
@@ -104,7 +104,11 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 
 		//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
 		//wenn ja:
-		//schleife die allen das sendet
+		//schleife die allen das sende
+
+		//wenn nicht:
+
+		Object.values(clients).forEach(connection => connection.send(`{"target": "fieldUpdated", "value": {"x": ${x}, "y": ${y}}}`));
 
 		const win = CheckForWinner(idCurrentPlayer, idOtherPlayer);
 		if (win != 0) {
@@ -115,29 +119,25 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 				winnerId = idOtherPlayer;
 			}
 			else if (win === -1) {
-				winnerId = "draw";
+				winnerId = -1;
 			}
 			for (const [id, con] of Object.entries(clients)) {
 				clients[id].send(`{ "target": "winner", "value": ${winnerId} }`);
 			}
 		}
 
-		//wenn nicht:
-		else {
-			clients[idOtherPlayer].send(`{"target": "fieldUpdated", "value": {"x": ${x}, "y": ${y}}`); //websocket //id = id vom anderen spieler (der von 	dem die nachricht NICHT kam)
-		}
 		//und res.send(200);  /http immer kommen auser im fehlerfall
-		res.send(200);
+		res.sendStatus(200);
 	}
 	else {
-		res.send("Not your Turn");
+		res.send("Not your Turn", 400);
 	}
 });
 
 function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 	let currentPlayerString = idCurrentPlayer.toString().repeat(3);
 	let otherPlayerString = idOtherPlayer.toString().repeat(3);
-	let full = 0;
+	let full = true;
 	//spalten und zeilen checken
 	for (i = 0; i < field.length; i++){
 		let posRow = '';
@@ -146,7 +146,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 			posRow = posRow + field[i][j].toString();
 			posCol = posCol + field[j][i].toString();
 			if (field[i][j] === 0) {
-				full = 1;
+				full = false;
 			}
 		}
 		let winRow = winCondition(posRow, currentPlayerString, otherPlayerString);
@@ -159,7 +159,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 		}
 	}
 	//diagonalen checken
-	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString(), currentPlayerString, otherPlayerString);
+	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString(), currentPlayerString, otherPlayerString); //122
 	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString(), currentPlayerString, otherPlayerString);
 	if (dia01 > 0) {
 		return dia01;
@@ -167,7 +167,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 	else if (dia02 > 0) {
 		return dia02;
 	}
-	else if (full === 1){
+	else if (full){
 		return -1;
 	}
 	else {
