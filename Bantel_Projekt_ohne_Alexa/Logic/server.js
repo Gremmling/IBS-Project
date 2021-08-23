@@ -49,6 +49,7 @@ const createUniqueID = () => {
 //die verbindung für die Id speichern.
 websocketServer.on('request', function (req) {
 	//wenn dictionary kleiner 2 ist kann gespeichert werden
+
 	if (Object.keys(clients).length < 2) {
 		console.log('Moiiiin');
 		const id = createUniqueID();
@@ -73,6 +74,28 @@ websocketServer.on('close', function (connection ,resonCode, description) {//aus
 		}
 	}
 });
+
+//reset bekommen
+app.post("/ttt/reset", (req, res) => {
+	const resetMessage = req.body;
+	const task = resetMessage.target;
+	let idCurrentPlayer = resetMessage.id;
+	let idOtherPlayer = Object.keys(clients).filter((key) => {
+		return key !== idCurrentPlayer;
+	})[0];
+
+	if (task === "reset") {
+		field = [
+			[0, 0, 0],
+			[0, 0, 0],
+			[0, 0, 0]
+		];
+		idLastPlayer = "";
+		Object.values(clients).forEach(connection => connection.send(`{ "target": "resetPLS"}`));
+	}
+	res.sendStatus(200);
+})
+
 
 app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 	const message = req.body;
@@ -110,7 +133,7 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 
 		Object.values(clients).forEach(connection => connection.send(`{"target": "fieldUpdated", "value": {"x": ${x}, "y": ${y}}}`));
 
-		const win = CheckForWinner(idCurrentPlayer, idOtherPlayer);
+		var win = CheckForWinner(idCurrentPlayer, idOtherPlayer);
 		if (win != 0) {
 			if (win === 1) {
 				winnerId = idCurrentPlayer;
@@ -124,6 +147,8 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 			for (const [id, con] of Object.entries(clients)) {
 				clients[id].send(`{ "target": "winner", "value": ${winnerId} }`);
 			}
+			res.send("Game Over", 200);
+			return;
 		}
 
 		//und res.send(200);  /http immer kommen auser im fehlerfall

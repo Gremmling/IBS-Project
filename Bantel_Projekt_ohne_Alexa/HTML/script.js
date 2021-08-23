@@ -8,6 +8,7 @@ var field = [
 ];
 var amountPlayed = 0;
 var id;
+var gameOver = false;
 
 const websocket = new WebSocket('ws://localhost:8080'); //verbindung zum websocket backend aufbauen
 
@@ -32,18 +33,27 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 	console.log(target);
 	if (target === "connection.successfully") {
 		console.log("connected");
+		reset(true);
 		id = message.value;
-		alert(id);
 		return;
 	}
 	if (target === "disconected"){// nächste target möglichkeit abarbeiten
 		console.log("disconected");
-		alert("Your Enemy disconected");
-		reset();
+		reset(true);
 		return;
 	}
 	if (target === "winner") {
+		gameOver = true;
 		console.log("game Over");
+		//verhindern das noch mehr gedrückt werden kann
+		for (var i = 0; i < field.length; i++){
+			for (var j = 0; j < field.length; j++){
+				let row = i.toString();
+				let col = j.toString();
+				document.getElementById(row + col).style.pointerEvents = "none";
+			}
+		}
+		console.log("hab sie disabled");
 		if (message.value === id) {
 			document.getElementById("winner").innerHTML = "You've won!!!";
 		}
@@ -53,6 +63,7 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 		else {
 			document.getElementById("winner").innerHTML = "You've lost!!!";
 		}
+		res.send("Game Over");
 		return;
 	}
 	if (target === "fieldUpdated") {
@@ -80,26 +91,11 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 		amountPlayed = 0;
 		return;
 	}
+	if (target === "resetPLS") {
+		reset(false);
+	}
 
 }
-
-function ticTacToe(position) {
-	const col = parseInt(position.charAt(1));;
-	const row = parseInt(position.charAt(0));;
-	axiosInstance.post('/ttt', {x: row, y: col, id: id})
-		.catch((error) => { //abfragen was in der res.send message steht
-			console.log(error.response.data);
-			if (error.response.data === "Not your Turn") {
-				alert("Wait for your Turn");
-				return;
-			}
-			if (error.response.data === "Wrong Coordinates") {
-				alert("Wrong Coordinates");
-			}
-	})
-}
-
-
 
 
 const axiosInstance = axios.create({
@@ -172,18 +168,42 @@ function newJoke() {
 	}
 }
 
-function reset() {
+function ticTacToe(position) {
+	const col = parseInt(position.charAt(1));;
+	const row = parseInt(position.charAt(0));;
+	axiosInstance.post('/ttt', {x: row, y: col, id: id})
+		.catch((error) => { //abfragen was in der res.send message steht
+			console.log(error.response.data);
+			if (error.response.data === "Not your Turn") {
+				alert("Wait for your Turn");
+				return;
+			}
+			if (error.response.data === "Wrong Coordinates") {
+				alert("Wrong Coordinates");
+			}
+			if (error.response.data === "Game Over") {
+				alert("Game is already over");
+			}
+	})
+}
+
+function reset(post) {
+	gameOver = false;
 	field = [
 		[0, 0, 0],
 		[0, 0, 0],
 		[0, 0, 0]
 	];
-	for (i = 0; i < field.length; i++){
-		for (j = 0; j < field.length; j++){
+	for (var i = 0; i < field.length; i++){
+		for (var j = 0; j < field.length; j++){
 			let row = i.toString();
 			let col = j.toString();
+			document.getElementById(row + col).style.pointerEvents = "";
 			document.getElementById(row + col).innerHTML = "";
 		}
 	}
 	document.getElementById("winner").innerHTML = "";
+	if (post) {
+		axiosInstance.post('/ttt/reset', { target: "reset", id: id })
+	}
 }
