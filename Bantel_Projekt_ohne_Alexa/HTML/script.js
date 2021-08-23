@@ -10,7 +10,7 @@ var amountPlayed = 0;
 var id;
 var gameOver = false;
 
-const websocket = new WebSocket('ws://localhost:8080'); //verbindung zum websocket backend aufbauen
+const websocket = new WebSocket(`ws://${window.location.hostname}:8080`); //verbindung zum websocket backend aufbauen
 
 websocket.onopen = () => { //connection öffnen => bekommen wir das hier
 	console.log("Connected to WS Server");
@@ -99,7 +99,7 @@ websocket.onmessage = (message) => { //gespräch läuft hier ab //
 
 
 const axiosInstance = axios.create({
-	baseURL: 'http://localhost:5000'
+	baseURL: `http://${window.location.hostname}:5000`
 });
 
 function selection(x) {
