@@ -82,13 +82,13 @@ websocket.onmessage = (message) => {
 		console.log("hab sie disabled");
 		//Ausgabe wer gewonnen hat
 		if (message.value === id) {
-			document.getElementById("winner").innerHTML = "You've won!!!";
+			document.getElementById("winner").innerHTML = "You win!";
 		}
 		else if (message.value === -1) {
 			document.getElementById("winner").innerHTML = "Tie!";
 		}
 		else {
-			document.getElementById("winner").innerHTML = "You've lost!!!";
+			document.getElementById("winner").innerHTML = "You lose!";
 		}
 		res.send("Game Over");
 		return;
@@ -173,9 +173,9 @@ function selection(x) {
 			//ergebnis ausgeben
 			document.getElementById("result").innerHTML = data.result;
 			if (uname)
-				document.getElementById("score").innerHTML = "Your score against Alexa: " + data.score;
+				document.getElementById("score").innerHTML = "Your score against the computer: " + data.score;
 			else
-				document.getElementById("score").innerHTML = "Insert a username to see your score against Alexa.";
+				document.getElementById("score").innerHTML = "Insert a username to see your score against the computer.";
 		});
 }
 
