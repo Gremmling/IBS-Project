@@ -1,20 +1,25 @@
-// express kram
-const express = require('express'); //server selber
-const bodyParser = require('body-parser'); //body aus post auslesen
+//express
+//Server
+const express = require('express');
+//den body aus dem Post auslesen
+const bodyParser = require('body-parser');
 const cors = require('cors');
+//axios einbinden
 const axios = require('axios').default;
-const WebSocketServer = require('websocket').server; //nur den Websocket Server teil nutzen
-const http = require('http'); //http nutzen
 
-// mongodb kram
+//websocket einbinden, aber nur den Server teil davon
+const WebSocketServer = require('websocket').server;
+//http einbinden
+const http = require('http');
+
+// mongodb einbinden
 const { MongoClient, ReturnDocument } = require('mongodb');
 
-const app = express(); //der express servers wird erstellt
-app.use(cors()); //andere pakete wollen wir verwenden
+//erzeugung des express server und desen pakete die wir verwenden wollen
+const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
-
-//Websocket: (Fragen?)
 
 //variablen fürs TicTacToe:
 var field = [
@@ -24,14 +29,16 @@ var field = [
 ];
 var idLastPlayer = "";
 
-const clients = {}; //dictornary erstellen
+//dictornary erstellen
+const clients = {};
 
-//http an websocket packen:
+
+//http an websocket verknüpfen:
 const server = http.createServer((req, res) => {
 	console.log("Moiiiiin");
 	res.writeHead(404);
 	res.end();
-}); //server created
+}); //server erzeugt
 server.listen(8080, () => console.log("HTTP Server listening on Port 8080"));
 const websocketServer = new WebSocketServer({
 	httpServer: server,
@@ -40,7 +47,7 @@ const websocketServer = new WebSocketServer({
 
 //unique userid für jeden Nutzer anlegen:
 const createUniqueID = () => {
-	// Random zahl erzeugen, diese in einen String speichern und die erste Stelle erstetzen
+	// Random zahl erzeugen, diese an den nutzer senden
 	let id = Math.floor(Math.random() * 1000);
 	console.log(id);
 	return id;
@@ -48,8 +55,8 @@ const createUniqueID = () => {
 
 //die verbindung für die Id speichern.
 websocketServer.on('request', function (req) {
-	//wenn dictionary kleiner 2 ist kann gespeichert werden
 
+	//wenn dictionary kleiner 2 ist kann gespeichert werden
 	if (Object.keys(clients).length < 2) {
 		console.log('Moiiiin');
 		const id = createUniqueID();
@@ -58,6 +65,7 @@ websocketServer.on('request', function (req) {
 		//an script die id senden damit ich damit weiter machen kann
 		connection.send(`{"target": "connection.successfully", "value": ${id}}`);
 
+		//wenn zwei nutzer im Dictionary sind bekommt der User eine nachricht das sein gegner verbunden ist
 		if (Object.keys(clients).length == 2) {
 			Object.values(clients).forEach(connection => connection.send(`{ "target": "opponent connected"}`));
 		}
@@ -69,52 +77,69 @@ websocketServer.on('request', function (req) {
 	}
 });
 
-websocketServer.on('close', function (connection ,resonCode, description) {//aus clients rausnehmen und anderen benachrichtigen
-	//liste durch und richtige connection rauslöschen und anderen benachrichtigen´
+
+//aus clients den nutzer löschen und anderen spieler benachrichtigen
+websocketServer.on('close', function (connection, resonCode, description) {
 	//ander ID Rausfinden
 	for (const [id, con] of Object.entries(clients)){
 		if (con == connection)
+			//id aus liste löschen
 			delete clients[id];
-		else {
-			clients[id].send(`{ "target": "disconected" }`); //id vom anderen spieler
+			else {
+			//an die letzte verbleibende Id die nachricht senden das der gegner disconected ist
+			clients[id].send(`{ "target": "disconected" }`);
 		}
 	}
 });
 
-//reset bekommen
+//reset bearbeiten
 app.post("/ttt/reset", (req, res) => {
+	//Nachricht aus require in Variablen speichern
 	const resetMessage = req.body;
 	const task = resetMessage.target;
-	let idCurrentPlayer = resetMessage.id;
-	let idOtherPlayer = Object.keys(clients).filter((key) => {
-		return key !== idCurrentPlayer;
-	})[0];
+	//aktueller spieler einspeichern
 
+	//brauch ich das???
+	// let idCurrentPlayer = resetMessage.id;
+
+	// let idOtherPlayer = Object.keys(clients).filter((key) => {
+	// 	return key !== idCurrentPlayer;
+	// })[0];
+
+	//wenn wir reset als nachricht bekommen ausführen
 	if (task === "reset") {
+		//feld zurück setzen
 		field = [
 			[0, 0, 0],
 			[0, 0, 0],
 			[0, 0, 0]
 		];
+		//letzen Spieler zurücksetzen
 		idLastPlayer = "";
+		//an beide Spieler die Nachricht senden das reseted werden soll
 		Object.values(clients).forEach(connection => connection.send(`{ "target": "resetPLS"}`));
 	}
 	res.sendStatus(200);
 })
 
 
-app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
+//Überprüfung ob aktueller Zug in Ordnung ist und ob jemand gewonnen hat
+app.post("/ttt", (req, res) => {
+	//Nachricht aus require in Variablen speichern
 	const message = req.body;
+	//die ID speichern
 	let idCurrentPlayer = message.id;
+	//position des Klicks speichern
 	const x = message.x;
 	const y = message.y;
 	var winnerId = "";
 
-	//abfragen welcher spieler gespielt hat (mithilfe der ID) in req steht das
+	//Andere ID rausfinden
 	let idOtherPlayer = Object.keys(clients).filter((key) => {
 		return key !== idCurrentPlayer;
 	})[0];
 
+	//wenn letzter Spieler nicht der gleiche war wir der Aktuelle Spieler wird das folgende ausgeführt
 	if (idLastPlayer !== idCurrentPlayer) {
 
 
@@ -123,51 +148,57 @@ app.post("/ttt", (req, res) => {//server schickt dem client wer gewonnen hat
 			field[x][y] = idCurrentPlayer;
 			idLastPlayer = idCurrentPlayer;
 		}
-		//http send, überprüfung falsch: res.send("falsch", 400);
+		//wenn es nicht verfügbar, fehler senden
 		else {
 			res.send("Wrong Coordinates", 400);
 			return;
 		}
 
-		//prüfen ob gewonnen wurde
-
-		//feld updaten also wenn nicht gewonne, dann wird das untere gesendet
-		//wenn ja:
-		//schleife die allen das sende
-
-		//wenn nicht:
-
+		//feld updaten an beide nutzer senden
 		Object.values(clients).forEach(connection => connection.send(`{"target": "fieldUpdated", "value": {"x": ${x}, "y": ${y}}}`));
 
+		//überprüfen wer gewonnen hat
 		var win = CheckForWinner(idCurrentPlayer, idOtherPlayer);
+		// wenn jemand gewonnen hat ausführen
 		if (win != 0) {
+			//wenn das ergebnis eine 1 ist gewinnt der aktuelle Spieler
 			if (win === 1) {
 				winnerId = idCurrentPlayer;
 			}
+
+			//wenn das ergebnis eine 1 ist gewinnt der andere Spieler
 			else if (win === 2) {
 				winnerId = idOtherPlayer;
 			}
+
+			//im falle eines unendschiedens ist das ergebnis eine -1
 			else if (win === -1) {
 				winnerId = -1;
 			}
+			//an alle nutzer senden welche ID gewonnen hat
 			for (const [id, con] of Object.entries(clients)) {
 				clients[id].send(`{ "target": "winner", "value": ${winnerId} }`);
 			}
+			//user senden das das Spiel vorbei ist fals er noch klickt
 			res.send("Game Over", 200);
 			return;
 		}
 
-		//und res.send(200);  /http immer kommen auser im fehlerfall
+		//alles hat geklappt an user senden
 		res.sendStatus(200);
 	}
+	//fals der aktuelle spieler nicht am zug ist wird das ausgegebn
 	else {
 		res.send("Not your Turn", 400);
 	}
 });
 
+//Funktion die überprüft wer gewonenn hat
 function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
+	//ids der Spieler in Strings speichern und das mal 3 nehmen
 	let currentPlayerString = idCurrentPlayer.toString().repeat(3);
 	let otherPlayerString = idOtherPlayer.toString().repeat(3);
+	//variable die überprüft ob es unendschieden ist
 	let full = true;
 	//spalten und zeilen checken
 	for (i = 0; i < field.length; i++){
@@ -180,6 +211,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 				full = false;
 			}
 		}
+		//überprüfen wer gewonnen hat indem sie die Strings vergleicht
 		let winRow = winCondition(posRow, currentPlayerString, otherPlayerString);
 		let winCol = winCondition(posCol, currentPlayerString, otherPlayerString);
 		if (winRow > 0) {
@@ -189,7 +221,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 			return winCol;
 		}
 	}
-	//diagonalen checken
+	//diagonalen überprüfen
 	let dia01 = winCondition(field[0][0].toString() + field[1][1].toString() + field[2][2].toString(), currentPlayerString, otherPlayerString); //122
 	let dia02 = winCondition(field[0][2].toString() + field[1][1].toString() + field[2][0].toString(), currentPlayerString, otherPlayerString);
 	if (dia01 > 0) {
@@ -206,6 +238,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 	}
 }
 
+//vergleicht den in CheckForWinner() gespeicherten String den win conditions, dafür muss die winner ID 3 mal hintereinander stehen
 function winCondition(pos, currentPlayerString, otherPlayerString) {
 	if (pos === currentPlayerString) {
 		return 1;
@@ -222,34 +255,35 @@ function winCondition(pos, currentPlayerString, otherPlayerString) {
 
 
 
-
+//brauchen wir das noch?
 app.get("/games/tickTacToe", (req, res) => {
 	res.send("hat geklappt")
 })
 
 
+//antwort auf anfrage des witzes aus der API
 app.get("/jokeWithAPI", (req, res) => {
+	//den Witz aus der API rauslesen und zurück senden
 	axios.get('https://api.chucknorris.io/jokes/random', {})
 		.then(({ data }) => {
 			res.send(data.value);
 		});
 })
 
+//Witz aus der Datenbank zurücksenden
 app.get("/jokeWithDatabase", (req, res) => {
 	connectDatabase(req.body, 1).then(answer => {
 		res.send(answer);
 	})
 })
 
+//witz in datenbank speichern und antwort an den Nutzer zurück senden
 app.post("/newJoke", (req, res) => {
 	connectDatabase(req.body, 2).then(answer => {
 		res.send(answer);
 	})
 })
 
-app.post("/rps/initRPS", (req, res) => {
-	//alexa sagen, dass jetzt ein spiel startet
-});
 
 app.post("/rps/userSelection", (req, res) => {
 	// aus req lesen welceh auswahl der spieler getroffen hat
@@ -259,12 +293,16 @@ app.post("/rps/userSelection", (req, res) => {
 	})
 });
 
+//brauchen wir das?
 app.listen(5000, () => {
 	console.log("Listening on Port 5000 :>)");
 })
 
+
+//zur Datenbank verbinden
 async function connectDatabase(data, value) {
 
+	//uri der Datenbank
 	const uri = "mongodb+srv://Jannik:oKiYjEJ5G6zJJhO0@ibsproject.h8auc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
     const client = new MongoClient(uri);
@@ -310,12 +348,16 @@ async function connectDatabase(data, value) {
 	return answer;
 }
 
+
+//user ID in der Datenbank finden
 async function findUser(client, username) {
     const result = await client.db("rps").collection("scoreboard").findOne({ name: username });
 
 	return result;
 }
 
+
+//user in der Datenbank anlegen
 async function createUser(client, username, result) {
 	if (result == "<h2>You win!</h2>") {
 		var newListing =  {
@@ -347,6 +389,8 @@ async function createUser(client, username, result) {
 	return score;
 }
 
+
+//User updaten wenn Schere Stein Papier gespielt wurde
 async function updateUser(client, username, result) {
 	const res = await client.db("rps").collection("scoreboard").findOne({ name: username });
 
@@ -373,6 +417,8 @@ async function updateUser(client, username, result) {
 	return score;
 }
 
+
+//Witz aus der Datenbank auslesen, mithilfe einer Random Zahl
 async function getJoke(client) {
 	let length = await client.db("jokes").collection("collection").countDocuments({});
 	let n = Math.floor(Math.random() * length) + 1;
@@ -383,6 +429,8 @@ async function getJoke(client) {
 	return answer;
 }
 
+
+//neuen Witz in Datenbank einfügen, wenn er schon vorhanden ist gib eine Nachricht aus die den Nutzer informiert
 async function newJoke(client, joke) {
 	const result = await client.db("jokes").collection("collection").findOne({ joke: joke });
 
@@ -404,9 +452,12 @@ async function newJoke(client, joke) {
 	return answer;
 }
 
-function createSelection() { //warten bis ich ergebnis zurück schicke, im Client das bild(rechts) und unten das ergebnis erst danach aktualiesiern
+//Auswahl vom server erzeugen
+function createSelection() {
+	//random zahl zwischen 1 und 3 erzeugen
 	let answer = Math.floor(Math.random() * 3) + 1;
 
+	//antwort zuweisen
 	if (answer === 1)
 		answer = "Scissors";
 	else if (answer === 2)
@@ -414,14 +465,19 @@ function createSelection() { //warten bis ich ergebnis zurück schicke, im Clien
 	else if (answer === 3)
 		answer = "Paper";
 
+	//fals ein fehler auftritt
 	if (answer !== "Scissors" && answer !== "Rock" && answer !== "Paper") {
 		answer = "Wrong Input";
 	}
 
+	//antwort zurücksenden
 	return answer;
 }
 
+
+//überprüfen wer gewonnen hat und das zurück senden
 function getResult(x, y) {
+
 	var result = "<h2>You win!</h2>";
 
 	if ((x === "Scissors" && y === "Rock") || (x === "Rock" && y === "Paper") || (x === "Paper" && y === "Scissors"))
