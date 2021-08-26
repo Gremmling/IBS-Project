@@ -1,5 +1,8 @@
+<!--Seite für Tic Tac Toe-->
 <!DOCTYPE html>
 <html>
+
+	<!--Die Styles die wir hier verwende haben-->
 	<style>
 		h1{
 			text-align: center;
@@ -63,6 +66,10 @@
 			float: left;
 		}
 
+		.buttonStyle{
+			box-shadow: 4px 4px;
+		}
+
 		.Row {
 			width: 80%;
 			margin-bottom: 3%;
@@ -89,14 +96,19 @@
 
 	</style>
 
+	<!--Der Head der Seite-->
 	<head>
+		<!--Einbindung von axios und dem Script-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="script.js"></script>
+		<!--Der Titel der Seite-->
 		<title>Tic-Tac-Toe</title>
 	</head>
-
+	<!--Der Body der Seite-->
 	<body>
+		<!--Die überschrift-->
 		<h1>Tic Tac Toe</h1>
+		<!--Die Anzeige links, für Spieler eins, dieser bekommt das Kreuz und darunter Spieler zwei der bekommt Kreis (Der der zu erst Klickt ist Spieler eins) -->
 		<div class="row">
 			<div class="colLeft">
 				<div id="player One">
@@ -107,8 +119,11 @@
 					<h3>Player Two: <img src="pictures/circle.png" style="height: 28px;">
 					</h3>
 				</div>
-				<button class="resetbutton" onclick="reset(true)">Reset</button>
+				<!--Der Reset Button, er setzt alles zurück-->
+				<button class="resetbutton buttonStyle" onclick="reset(true)">Reset</button>
 			</div>
+
+			<!--Das Spielfeld-->
 			<div class="colRight">
 				<div id="winner"></div>
 				<div class="divCenter">
@@ -128,9 +143,11 @@
 				</div>
 			</div>
 		</div>
+
+		<!--Die Buttons zum Front Page zurück gehen oder nur zurück zu gehn-->
 		<div class="buttonsDiv">
-			<button onclick="window.location.href='Games.html'">Go back</button>
-			<button onclick="window.location.href='index.html'">Go home</button>
+			<button class="buttonStyle" onclick="window.location.href='Games.html'">Go back</button>
+			<button class="buttonStyle" onclick="window.location.href='index.html'">Go home</button>
 		</div>
 	</body>
 </html>

@@ -1,5 +1,8 @@
+<!--Die Seite auf der Witze angezeigt werden-->
 <!DOCTYPE html>
 <html>
+
+	<!--Die Styles die wir hierfür verwendet haben-->
 	<style>
 		h1{
 			text-align: center;
@@ -29,18 +32,6 @@
 			margin-bottom: 30px;
 		}
 
-		.buttonStyle{
-			border-radius: 8px;
-			font-size: 50px;
-			width: 30%;
-			box-shadow: 4px 4px;
-		}
-
-		.centerLabel{
-			margin: auto;
-			padding: 10px;
-		}
-
 		.inputStyle{
 			width: 90%;
 			height: 300px;
@@ -54,24 +45,43 @@
 		}
 	</style>
 
+	<!--Head der Seite-->
 	<head>
+
+		<!--Einbinden unseres Scripts und von Axios-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="script.js"></script>
 		<title>Jokes</title>
 	</head>
 
+	<!--Body der Seite-->
 	<body>
+
+		<!--Überschrift mit dem Titel der Seite-->
 		<h1>Jokes</h1>
 
+		<!--Erzeugung eines Divs zum bessern anpassen der Seite-->
 		<div id="container">
+
+			<!--Eine Überschrift um den Nutzer zu zeigen was er machen soll-->
 			<h2>Select your choice:</h2>
+
+			<!--erzeugung eines Divs für die Buttons, einen für einen Witz durch eine API und einen aus unseren Datenbank-->
 			<div>
 				<button onclick="jokeWithAPI()">Tell joke (API)</button>
 				<button onclick="jokeWithDatabase()">Tell Joke (Database)</button>
 			</div>
+
+			<!--das feld in dem der Witz ausgegeben wird-->
 			<input type="text" readonly id="joke" class="inputStyle"></input>
+
+			<!--Einen neuen Witz einfügen-->
 			<h3>Got an idea for a new joke? Enter it here and it will be added to the database:</h3>
+
+			<!--das feld zum eingeben des Witzes-->
 			<input type="text" id="newJoke" class="inputStyle2"></input>
+
+			<!--das div um den neuen Button in die Datenbank hinzufügen und der button um zurück auf die Front page gehen-->
 			<div id="jokeAdded"></div>
 			<button onclick="newJoke()">Add new joke</button>
 			<button onclick="window.location.href='index.html'">Go back</button>

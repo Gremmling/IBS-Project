@@ -1,5 +1,8 @@
+<!--Hier ist der Code der Front Page unserer Application-->
 <!DOCTYPE html>
 <html>
+
+	<!--Hier werden die Styles festgelegt-->
 	<style>
 		h1{
 			text-align: center;
@@ -40,20 +43,34 @@
 		}
 
 	</style>
+
+	<!--Head unseres Projekts-->
 	<head>
+
+		<!--Einbindungen von der Bibliothek Axios und unserer Script des Servers-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="module" src="../Logic/server.js"></script>
+
+		<!--Den Titel des Projektes-->
 		<title>Bantel Project</title>
 	</head>
+
+	<!--Hier startet der body unser website-->
 	<body>
+		<!--Zwei überschriften für den Titel und was der Nutzer machen soll-->
 		<h1>Anti Boredom</h1>
 		<h2>Choose what to play:</h2>
 
+		<!--Erzeugung eines Divs, dieses wird verwendet um die einzelnen Buttons besser einzugrenzen, dafür bekommt es den Style "centerButtons"-->
 		<div class="centerButtons">
+			<!--eine Div für den linken Button-->
 			<div class="colLeft">
+				<!--der Linke button, der leitet uns auf die Seite von dem Spielen weiter-->
 				<button class="buttonStyle" onclick="window.location.href='Games.html'">Games</button>
 			</div>
+			<!--eine Div für den rechten Button-->
 			<div class="colRight">
+				<!--der Rechte button, der leitet uns auf die Seite für einen Witz weiter-->
 				<button class="buttonStyle" onclick="window.location.href='Jokes.html'">Jokes</button>
 			</div>
 		</div>

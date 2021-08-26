@@ -1,5 +1,8 @@
+<!--Die Seite auf der die auswahl der Spiele angezeigt werden-->
 <!DOCTYPE html>
 <html>
+
+	<!--Die Styles die wir für die Seite verwendet haben-->
 	<style>
 		h1{
 			text-align: center;
@@ -59,23 +62,36 @@
 		}
 
 	</style>
+
+	<!--Der header der Seite-->
 	<head>
+		<!--Axios einfügen und den Server-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="module" src="../Logic/server.js"></script>
+		<!--Titel der Seite-->
 		<title>Games</title>
 	</head>
 	<body>
+
+		<!--Überschriften der Seite-->
 		<h1>Games</h1>
 		<h2>Choose what to play:</h2>
 
+		<!--Das Div um die Buttons besser anzuordnen-->
 		<div class="centerButtons">
+				<!--Das Div um den Button besser anzuordnen-->
 			<div class="colLeft">
+				<!--Button um zu Schere Stein Papier zu kommen-->
 				<button class="buttonStyle" onclick="window.location.href='Rock_Paper_Scissors.html'">Rock, Paper, Scissors</button>
 			</div>
+				<!--Das Div um den Button besser anzuordnen-->
 			<div class="colRight">
+				<!--Der Button um zu Tic Tac Toe zu kommen-->
 				<button class="buttonStyle" onclick="window.location.href='Tic_Tac_Toe.html'">Tic Tac Toe</button>
 			</div>
+				<!--Das Div um den Button besser anzuordnen-->
 			<div class="rowBack">
+				<!--Der Button um auf die Hauptseite zu kommen-->
 				<button onclick="window.location.href='index.html'">Go back</button>
 			</div>
 		</div>

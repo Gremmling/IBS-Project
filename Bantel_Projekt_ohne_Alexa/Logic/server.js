@@ -57,6 +57,11 @@ websocketServer.on('request', function (req) {
 		clients[id] = connection;
 		//an script die id senden damit ich damit weiter machen kann
 		connection.send(`{"target": "connection.successfully", "value": ${id}}`);
+
+		if (Object.keys(clients).length == 2) {
+			Object.values(clients).forEach(connection => connection.send(`{ "target": "opponent connected"}`));
+		}
+
 	}
 	//wenn nicht fehler senden
 	else {
@@ -66,6 +71,7 @@ websocketServer.on('request', function (req) {
 
 websocketServer.on('close', function (connection ,resonCode, description) {//aus clients rausnehmen und anderen benachrichtigen
 	//liste durch und richtige connection rauslöschen und anderen benachrichtigen´
+	//ander ID Rausfinden
 	for (const [id, con] of Object.entries(clients)){
 		if (con == connection)
 			delete clients[id];
