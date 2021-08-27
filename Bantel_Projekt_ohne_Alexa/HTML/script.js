@@ -135,6 +135,12 @@ const axiosInstance = axios.create({
 
 //Schere Stein Papier auswahl anhand des Buttons
 function selection(x) {
+	// Buttons werden während der Funktion disabled
+	document.getElementById("button1").disabled = true;
+	document.getElementById("button2").disabled = true;
+	document.getElementById("button3").disabled = true;
+	document.getElementById("uname").readOnly = true;
+
 	let choice = x;
 	//Bilder für die jeweilige Wahl speichern
 	if (x === "Scissors") {
@@ -176,9 +182,14 @@ function selection(x) {
 				document.getElementById("score").innerHTML = "Your score against the computer: " + data.score;
 			else
 				document.getElementById("score").innerHTML = "Insert a username to see your score against the computer.";
+
+			//Buttons werden wieder aktiviert
+			document.getElementById("button1").disabled = false;
+			document.getElementById("button2").disabled = false;
+			document.getElementById("button3").disabled = false;
+			document.getElementById("uname").readOnly = false;
 		});
 }
-
 
 //Witze mit API ausgeben
 function jokeWithAPI() {
