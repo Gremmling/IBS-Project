@@ -261,7 +261,7 @@ app.get("/games/tickTacToe", (req, res) => {
 })
 
 
-//antwort auf anfrage des witzes aus der API
+//antwort auf anfrage des witzes aus der API, hier ist der link zu der verwendeten API: https://api.chucknorris.io
 app.get("/jokeWithAPI", (req, res) => {
 	//den Witz aus der API rauslesen und zurück senden
 	axios.get('https://api.chucknorris.io/jokes/random', {})
