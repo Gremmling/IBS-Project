@@ -238,7 +238,7 @@ function CheckForWinner(idCurrentPlayer, idOtherPlayer) {
 	}
 }
 
-//vergleicht den in CheckForWinner() gespeicherten String den win conditions, dafür muss die winner ID 3 mal hintereinander stehen
+//vergleicht den in CheckForWinner() gespeicherten String mit den win conditions, dafür muss die winner ID 3 mal hintereinander stehen
 function winCondition(pos, currentPlayerString, otherPlayerString) {
 	if (pos === currentPlayerString) {
 		return 1;
@@ -250,10 +250,6 @@ function winCondition(pos, currentPlayerString, otherPlayerString) {
 		return 0;
 	}
 }
-
-
-
-
 
 //brauchen wir das noch?
 app.get("/games/tickTacToe", (req, res) => {
@@ -308,8 +304,9 @@ async function connectDatabase(data, value) {
     const client = new MongoClient(uri);
 
     try {
-        // Connect to the MongoDB cluster
-        await client.connect();
+		// Connect to the MongoDB cluster
+		// Zu MongoDB verbinden
+		await client.connect();
 		console.log("connected");
 
 		if (value === 0) {
@@ -340,8 +337,9 @@ async function connectDatabase(data, value) {
     }
 
 	finally {
-        // Close the connection to the MongoDB cluster
-        await client.close();
+		// Close the connection to the MongoDB cluster
+		//die Verbindung zu MongoDB schließen
+		await client.close();
 		console.log("closed");
     }
 
