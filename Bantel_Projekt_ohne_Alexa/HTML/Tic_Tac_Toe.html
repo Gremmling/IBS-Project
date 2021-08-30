@@ -93,10 +93,9 @@
 		#winner{
 			margin-bottom: 30px;
 		}
-
 	</style>
 
-	<!--Der Head der Seite-->
+	<!--Head der Seite-->
 	<head>
 		<!--Einbindung von axios und dem Script-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -104,11 +103,12 @@
 		<!--Der Titel der Seite-->
 		<title>Tic-Tac-Toe</title>
 	</head>
-	<!--Der Body der Seite-->
+
+	<!--Body der Seite-->
 	<body>
-		<!--Die überschrift-->
+		<!--Die Überschrift-->
 		<h1>Tic Tac Toe</h1>
-		<!--Die Anzeige links, für Spieler eins, dieser bekommt das Kreuz und darunter Spieler zwei der bekommt Kreis (Der der zu erst Klickt ist Spieler eins) -->
+		<!--Die Anzeige links, für Spieler 1 (Kreuz) und darunter Spieler 2 mit Kreis (Der der zu erst klickt ist Spieler 1)-->
 		<div class="row">
 			<div class="colLeft">
 				<div id="player One">
@@ -119,7 +119,7 @@
 					<h3>Player Two: <img src="pictures/circle.png" style="height: 28px;">
 					</h3>
 				</div>
-				<!--Der Reset Button, er setzt alles zurück-->
+				<!--Der Reset Button-->
 				<button class="resetbutton buttonStyle" onclick="reset(true)">Reset</button>
 			</div>
 
@@ -144,7 +144,7 @@
 			</div>
 		</div>
 
-		<!--Die Buttons zum Front Page zurück gehen oder nur zurück zu gehn-->
+		<!--Die Zurück-Buttons-->
 		<div class="buttonsDiv">
 			<button class="buttonStyle" onclick="window.location.href='Games.html'">Go back</button>
 			<button class="buttonStyle" onclick="window.location.href='index.html'">Go home</button>

@@ -1,14 +1,7 @@
 <!--Die Schere Stein Papier Seite-->
 <!DOCTYPE html>
 <html>
-	<!--Head der Seite-->
-	<head>
-		<!--Das Script und Axios einbinden-->
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script src="script.js"></script>
-		<!--Titel der Seite-->
-		<title>Schere, Stein, Papier</title>
-	</head>
+	
 	<!--Styles der Seite-->
 	<style>
 		h1{
@@ -87,24 +80,33 @@
 			margin-bottom: 10px;
 		}
 	</style>
+
+	<!--Head der Seite-->
+	<head>
+		<!--Das Script und Axios einbinden-->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="script.js"></script>
+		<!--Titel der Seite-->
+		<title>Schere, Stein, Papier</title>
+	</head>
+
 	<!--Body der Seite-->
 	<body>
 		<!--Überschrift der Seite-->
 		<h1>Schere, Stein, Papier</h1>
-		<!--Div in dem der User seinen Username festlegen kann. Diese werden in der Datenbank gespeichert und speichern die Siege und Lose gegen den Server-->
+		<!--Div in dem der User seinen Username festlegen kann. Diese werden in der Datenbank gespeichert und speichern die Siege und Niederlagen gegen den Server-->
 		<div id="container">
 			<h2>Insert your username:</h2>
 			<input type="text" name="uname" id="uname">
 			<t>(A username is not required but needed, if your want to see your score against the computer.)</t>
 		</div>
-		<!--Die Buttons für die auswahl von schere stein papier-->
+		<!--Die Buttons für die Auswahl von Schere Stein Papier-->
 		<div id="container">
 			<h2>Select your choice:</h2>
 			<button id="button1" onclick="selection('Rock')">Rock</button>
 			<button id="button2" onclick="selection('Paper')">Paper</button>
 			<button id="button3" onclick="selection('Scissors')">Scissors</button>
 		</div>
-
 		<!--Hier wird deine Auswahl angezeigt mithilfe eines Bildes-->
 		<div class="colLeft">
 			<h2>Your choice:</h2>
@@ -121,13 +123,12 @@
 		</div>
 		<!--Hier wird das Ergebnis ausgeben, also wer gewonnen hat-->
 		<div id="result"></div>
-		<!--Hier wird der Score angebene, also alle Siege und Tode mit dem Passenden Username-->
+		<!--Hier wird der Score angeben, also alle Siege und Niederlagen mit dem Passenden Username-->
 		<div id="score"></div>
-		<!--Hier sind die beiden Buttons die ins Home menü und eine Seite zurück führen-->
+		<!--Hier sind die beiden Buttons die ins Home-Menü und eine Seite zurück führen-->
 		<div id="container">
 			<button onclick="window.location.href='Games.html'">Go back</button>
 			<button onclick="window.location.href='index.html'">Go Home</button>
 		</div>
-
 	</body>
 </html>

@@ -47,7 +47,6 @@
 
 	<!--Head der Seite-->
 	<head>
-
 		<!--Einbinden unseres Scripts und von Axios-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script src="script.js"></script>
@@ -56,32 +55,28 @@
 
 	<!--Body der Seite-->
 	<body>
-
 		<!--Überschrift mit dem Titel der Seite-->
 		<h1>Jokes</h1>
 
 		<!--Erzeugung eines Divs zum bessern anpassen der Seite-->
 		<div id="container">
-
 			<!--Eine Überschrift um den Nutzer zu zeigen was er machen soll-->
 			<h2>Select your choice:</h2>
-
-			<!--erzeugung eines Divs für die Buttons, einen für einen Witz durch eine API und einen aus unseren Datenbank-->
+			<!--Erzeugung eines Divs für die Buttons, einen für einen Witz durch eine API und einen für einen Witz aus unserer Datenbank-->
 			<div>
 				<button onclick="jokeWithAPI()">Tell joke (API)</button>
 				<button onclick="jokeWithDatabase()">Tell Joke (Database)</button>
 			</div>
-
-			<!--das feld in dem der Witz ausgegeben wird-->
+			<!--Feld in dem der Witz ausgegeben wird-->
 			<input type="text" readonly id="joke" class="inputStyle"></input>
 
 			<!--Einen neuen Witz einfügen-->
 			<h3>Got an idea for a new joke? Enter it here and it will be added to the database:</h3>
 
-			<!--das feld zum eingeben des Witzes-->
+			<!--Feld zum Eingeben des Witzes-->
 			<input type="text" id="newJoke" class="inputStyle2"></input>
 
-			<!--das div um den neuen Button in die Datenbank hinzufügen und der button um zurück auf die Front page gehen-->
+			<!--Div um den neuen Button in die Datenbank hinzufügen und der Button um zurück auf die Front page gehen-->
 			<div id="jokeAdded"></div>
 			<button onclick="newJoke()">Add new joke</button>
 			<button onclick="window.location.href='index.html'">Go back</button>
