@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
 	console.log("Websocket connected");
 	res.writeHead(404);
 	res.end();
-}); 
+});
 //Server erzeugt
 server.listen(8080, () => console.log("HTTP Server listening on Port 8080"));
 const websocketServer = new WebSocketServer({
@@ -94,14 +94,6 @@ app.post("/ttt/reset", (req, res) => {
 	//Nachricht aus require in Variablen speichern
 	const resetMessage = req.body;
 	const task = resetMessage.target;
-	//Aktueller spieler einspeichern
-
-	//brauch ich das???
-	// let idCurrentPlayer = resetMessage.id;
-
-	// let idOtherPlayer = Object.keys(clients).filter((key) => {
-	// 	return key !== idCurrentPlayer;
-	// })[0];
 
 	//Wenn wir Reset als Nachricht bekommen ausführen
 	if (task === "reset") {
@@ -246,12 +238,6 @@ function winCondition(pos, currentPlayerString, otherPlayerString) {
 		return 0;
 	}
 }
-
-//Brauchen wir das noch?
-app.get("/games/tickTacToe", (req, res) => {
-	res.send("hat geklappt")
-})
-
 
 //Antwort auf Anfrage des witzes aus der API, hier ist der Link zu der verwendeten API: https://api.chucknorris.io
 app.get("/jokeWithAPI", (req, res) => {
